@@ -3,15 +3,15 @@ import { useEffect, useState } from 'react';
 
 
 export default () => {
-  const [ state, setState ] = useState({message: 'hi'});
+  const [ state, setState ] = useState({items: []});
 
   useEffect(() => {
     const socket = io('http://localhost:3000');
 
-    socket.on('now', (data) => {
+    socket.on('data', ({items}) => {
       setState((prevState) => ({
         ...prevState,
-        message: data.message
+        items
       }));
     });
   }, []);
