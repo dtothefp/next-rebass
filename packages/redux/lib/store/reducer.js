@@ -6,21 +6,20 @@ import {
   UPDATE_ITEM,
   UPDATE_ITEM_SUCCESS,
   UPDATE_ITEM_FAILED,
-  deliveryStates
+  // deliveryStates
 } from './constants';
 
-const {CANCELLED, DELIVERED} = deliveryStates;
-const removalStates = [CANCELLED, DELIVERED];
+// const {CANCELLED, DELIVERED} = deliveryStates;
+// const removalStates = [CANCELLED, DELIVERED];
 
 export default (state = {}, action) => {
-  let items;
+  let items, updatedState, updatedFilter, updatedItems;
 
   switch (action.type) {
     case ADD_ITEMS:
-      items = action.items
-        .filter((item) => !removalStates.includes(item.event_name));
+      items = [...action.items].sort((a, b) => a.sent_at_second - b.sent_at_second);
 
-      return {
+      updatedState = {
         ...state,
         items,
       };
@@ -29,28 +28,44 @@ export default (state = {}, action) => {
       console.log('((()))', action);
       break;
     case FILTER_ITEM:
-      console.log('((()))', action);
+      updatedFilter = [...state.filter, action.item.toUpperCase()];
+
+      updatedState = {
+        ...state,
+        filter: updatedFilter
+      };
       break;
     case REMOVE_FILTER_ITEM:
-      console.log('((()))', action);
+      updatedFilter = state.filter.filter((item) => item !== action.item.toUpperCase());
+
+      updatedState = {
+        ...state,
+        filter: updatedFilter
+      };
       break;
     case UPDATE_ITEM:
-      return {
+      updatedState = {
         ...state,
         updating: [...state.updating, action.item.id]
       };
       break;
     case UPDATE_ITEM_SUCCESS:
-      return {
+      updatedState = {
         ...state,
         updating: state.updating.filter(({id}) => id !== action.item.id)
       };
       break;
     case UPDATE_ITEM_FAILED:
-      return {
+      updatedState = {
         ...state,
         updating: state.updating.filter(({id}) => id !== action.item.id)
       };
       break;
   }
+
+  if (process.env.NODE_ENV === 'development') {
+    console.log('***UPDATED_STATE***', updatedState);
+  }
+
+  return updatedState;
 }

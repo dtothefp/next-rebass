@@ -8,7 +8,9 @@ export default () => {
   return (
     <div>
       {state.items.map((item) => {
-        const {name, id, sent_at_second: sent} = item;
+        const {name, id, sent_at_second: sent, event_name} = item;
+
+        if (state.filter.length && !state.filter.includes(event_name)) return null;
 
         return (
           <Item

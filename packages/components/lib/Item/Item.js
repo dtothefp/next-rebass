@@ -17,9 +17,6 @@ export default (props) => {
   const {name} = props;
 
   const [state, setState] = useState(name);
-
-  console.log('****STATE NAME***', state);
-
   const handleChange = (e) => setState(e.target.value);
   const handleSubmit = (e) => {
     e.preventDefault();
