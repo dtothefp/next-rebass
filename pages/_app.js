@@ -2,6 +2,10 @@ import App from 'next/app';
 import React from 'react';
 import { StylesProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider } from 'styled-components';
+import { createMuiTheme } from '@material-ui/core/styles';
+
+const theme = createMuiTheme();
 
 export default class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -28,7 +32,9 @@ export default class MyApp extends App {
     return (
       <StylesProvider injectFirst>
         <CssBaseline />
-        <Component {...pageProps} />
+        <ThemeProvider theme={theme}>
+          <Component {...pageProps} />
+        </ThemeProvider>
       </StylesProvider>
     );
   }

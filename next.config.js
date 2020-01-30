@@ -1,14 +1,18 @@
 const path = require(`path`);
-const withTM = require(`next-transpile-modules`);
+const transpileModules = require(`next-transpile-modules`);
 const withESLint = require(`next-eslint`);
 const withCustomBabelConfigFile = require(`next-plugin-custom-babel-config`);
+const withPlugins = require(`next-compose-plugins`);
+
+const withTM = transpileModules([
+ `@css`, path.join(__dirname, `packages`)
+]);
 
 const {ASSET_PREFIX: assetPrefix = ``} = process.env;
 
-module.exports = withESLint(withTM(withCustomBabelConfigFile({
+module.exports = withPlugins([withTM, withESLint, withCustomBabelConfigFile], {
   babelConfigFile: path.join(__dirname, `babel.config.js`),
   assetPrefix,
-  transpileModules: [ `@css`, path.join(__dirname, `packages`) ],
   eslintLoaderOptions: {
     // failOnWarning: true,
     emitWarning: true,
@@ -17,4 +21,4 @@ module.exports = withESLint(withTM(withCustomBabelConfigFile({
   webpack(config) {
     return config;
   }
-})));
+});

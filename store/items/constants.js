@@ -1,0 +1,12 @@
+export const ADD_ITEMS = 'ADD_ITEMS';
+export const REMOVE_ITEM = 'REMOVE_ITEM';
+export const FILTER_ITEM = 'FILTER_ITEM';
+export const REMOVE_FILTER_ITEM = 'REMOVE_FILTER_ITEM';
+
+export const deliveryStates = {
+  CREATED: 'CREATED',
+  COOKED: 'COOKED',
+  DRIVER_RECEIVED: 'DRIVER_RECEIVED',
+  DELIVERED: 'DELIVERED',
+  CANCELLED: 'CANCELLED'
+};

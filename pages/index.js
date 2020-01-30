@@ -1,20 +1,28 @@
 import io from 'socket.io-client';
-import { useEffect, useState } from 'react';
-
+import { useEffect } from 'react';
+import { createStore, StoreContext } from '@css/redux';
+import { Container } from '@css/components';
+import reducer from '../store/items/reducer';
+import * as actions from '../store/items/actions';
 
 export default () => {
-  const [ state, setState ] = useState({items: []});
+  const initialState = {
+    items: {},
+    filter: []
+  };
+  const {state, dispatch} = createStore(reducer, initialState);
 
   useEffect(() => {
     const socket = io('http://localhost:3000');
 
     socket.on('data', ({items}) => {
-      setState((prevState) => ({
-        ...prevState,
-        items
-      }));
+      dispatch(actions.addItems(items));
     });
   }, []);
 
-  return <h1>Hello {state.message}</h1>;
+  return (
+    <StoreContext.Provider value={{state, dispatch}}>
+      <Container />
+    </StoreContext.Provider>
+  );
 };
