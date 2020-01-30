@@ -8,7 +8,8 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@material-ui/core": "4.9.0",
@@ -24,6 +25,7 @@
     "styled-system": "5.1.4"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-export-namespace-from": "7.8.3",
     "babel-eslint": "10.0.3",
     "eslint": "6.8.0",
     "eslint-plugin-react": "7.18.0",

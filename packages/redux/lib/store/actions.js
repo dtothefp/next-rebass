@@ -24,3 +24,8 @@ export const removeFilterItem = (item) => ({
   type: REMOVE_FILTER_ITEM,
   item
 });
+
+export const updateItem = (item, type) => ({
+  type,
+  item
+});

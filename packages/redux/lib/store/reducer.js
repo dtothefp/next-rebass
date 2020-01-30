@@ -3,6 +3,9 @@ import {
   REMOVE_ITEM,
   FILTER_ITEM,
   REMOVE_FILTER_ITEM,
+  UPDATE_ITEM,
+  UPDATE_ITEM_SUCCESS,
+  UPDATE_ITEM_FAILED,
   deliveryStates
 } from './constants';
 
@@ -14,16 +17,8 @@ export default (state = {}, action) => {
 
   switch (action.type) {
     case ADD_ITEMS:
-      items = action.items.reduce((acc, item) => {
-        const {id, ...rest} = item;
-        const shouldRemoveItem = state[id] && removalStates.includes(item.event_name);
-
-        if (!state[id] || !shouldRemoveItem) {
-          acc[id] = rest;
-        }
-
-        return acc;
-      }, {});
+      items = action.items
+        .filter((item) => !removalStates.includes(item.event_name));
 
       return {
         ...state,
@@ -38,6 +33,24 @@ export default (state = {}, action) => {
       break;
     case REMOVE_FILTER_ITEM:
       console.log('((()))', action);
+      break;
+    case UPDATE_ITEM:
+      return {
+        ...state,
+        updating: [...state.updating, action.item.id]
+      };
+      break;
+    case UPDATE_ITEM_SUCCESS:
+      return {
+        ...state,
+        updating: state.updating.filter(({id}) => id !== action.item.id)
+      };
+      break;
+    case UPDATE_ITEM_FAILED:
+      return {
+        ...state,
+        updating: state.updating.filter(({id}) => id !== action.item.id)
+      };
       break;
   }
 }

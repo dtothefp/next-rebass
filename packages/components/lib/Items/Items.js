@@ -5,19 +5,15 @@ import Item from '../Item/Item';
 export default () => {
   const {state} = useContext(StoreContext);
 
-  if (!state) return null;
-
-  console.log('***STATE', state)
-
   return (
     <div>
-      {Object.keys(state.items).map((id) => {
-        const {name} = state.items[id];
+      {state.items.map((item) => {
+        const {name, id, sent_at_second: sent} = item;
 
         return (
           <Item
-            name={name}
-            key={id}
+            {...item}
+            key={id + name + sent}
           />
         );
       })}

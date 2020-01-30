@@ -2,6 +2,9 @@ export const ADD_ITEMS = 'ADD_ITEMS';
 export const REMOVE_ITEM = 'REMOVE_ITEM';
 export const FILTER_ITEM = 'FILTER_ITEM';
 export const REMOVE_FILTER_ITEM = 'REMOVE_FILTER_ITEM';
+export const UPDATE_ITEM = 'UPDATE_ITEM';
+export const UPDATE_ITEM_SUCCESS = 'UPDATE_ITEM_SUCCESS';
+export const UPDATE_ITEM_FAILED = 'UPDATE_ITEM_FAILED';
 
 export const deliveryStates = {
   CREATED: 'CREATED',

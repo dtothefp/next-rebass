@@ -4,15 +4,15 @@ const withESLint = require(`next-eslint`);
 const withCustomBabelConfigFile = require(`next-plugin-custom-babel-config`);
 const withPlugins = require(`next-compose-plugins`);
 
-const withTM = transpileModules([
- `@css`, path.join(__dirname, `packages`)
-]);
-
+const withTM = transpileModules([`@css`, path.join(__dirname, `packages`)]);
 const {ASSET_PREFIX: assetPrefix = ``} = process.env;
 
 module.exports = withPlugins([withTM, withESLint, withCustomBabelConfigFile], {
   babelConfigFile: path.join(__dirname, `babel.config.js`),
   assetPrefix,
+  env: {
+    SERVER_URL: 'http://localhost:3000',
+  },
   eslintLoaderOptions: {
     // failOnWarning: true,
     emitWarning: true,
