@@ -10,7 +10,7 @@ const {
 } = actions;
 
 export default () => {
-  const {dispatch, state} = useContext(StoreContext);
+  const {dispatch} = useContext(StoreContext);
   const handleInputChange = ((e) => {
     const {checked, name} = e.target;
 

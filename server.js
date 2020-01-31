@@ -16,14 +16,14 @@ const jsonFp = path.join(__dirname, 'challenge_data.json');
 io.on('connect', async (socket) => {
   let i = 0;
 
-  socket.on('update', async (item, cb) => {
+  socket.on('update', async (newItem, cb) => {
     try {
       const data = await readJson(jsonFp);
-      const ids = data.map(({id}) => id);
-      const idx = ids.indexOf(item.id);
+      const idx = data.findIndex(({id}) => id === newItem.id);
+      const item = data[idx];
       const newData = [
         ...data.slice(0, idx),
-        item,
+        {...item, ...newItem},
         ...data.slice(idx + 1)
       ];
 
@@ -31,7 +31,7 @@ io.on('connect', async (socket) => {
 
       cb(null, item);
     } catch (err) {
-      cb(new Error(`Failed to update item ${item.id}`));
+      cb(new Error(`Failed to update item ${newItem.id}`));
     }
   });
 

@@ -13,7 +13,7 @@ import {
 // const removalStates = [CANCELLED, DELIVERED];
 
 export default (state = {}, action) => {
-  let items, updatedState, updatedFilter, updatedItems;
+  let items, updatedState, updatedFilter;
 
   switch (action.type) {
     case ADD_ITEMS:
