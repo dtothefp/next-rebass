@@ -1,16 +1,12 @@
 import {
   ADD_ITEMS,
-  REMOVE_ITEM,
   FILTER_ITEM,
   REMOVE_FILTER_ITEM,
   UPDATE_ITEM,
   UPDATE_ITEM_SUCCESS,
   UPDATE_ITEM_FAILED,
-  // deliveryStates
+  CHANGE_ITEM_VIEW
 } from './constants';
-
-// const {CANCELLED, DELIVERED} = deliveryStates;
-// const removalStates = [CANCELLED, DELIVERED];
 
 export default (state = {}, action) => {
   let items, updatedState, updatedFilter;
@@ -23,9 +19,6 @@ export default (state = {}, action) => {
         ...state,
         items,
       };
-      break;
-    case REMOVE_ITEM:
-      console.log('((()))', action);
       break;
     case FILTER_ITEM:
       updatedFilter = [...state.filter, action.item.toUpperCase()];
@@ -59,6 +52,12 @@ export default (state = {}, action) => {
       updatedState = {
         ...state,
         updating: state.updating.filter(({id}) => id !== action.item.id)
+      };
+      break;
+    case CHANGE_ITEM_VIEW:
+      updatedState = {
+        ...state,
+        view: action.view
       };
       break;
   }

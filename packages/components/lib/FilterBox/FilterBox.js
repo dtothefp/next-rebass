@@ -1,4 +1,6 @@
 import { useContext } from 'react';
+import { sizing } from '@material-ui/system';
+import styled from 'styled-components';
 import {
   actions,
   StoreContext
@@ -8,6 +10,14 @@ const {
   filterItem,
   removeFilterItem
 } = actions;
+
+const FilterForm = styled.form`
+  ${sizing}
+`;
+
+const Label = styled.label`
+  display: block;
+`;
 
 export default () => {
   const {dispatch} = useContext(StoreContext);
@@ -20,23 +30,23 @@ export default () => {
   });
 
   return (
-    <form>
-      <label>
+    <FilterForm width={1/4}>
+      <Label>
         Created
         <input
           name="created"
           type="checkbox"
           onChange={handleInputChange}
         />
-      </label>
-      <label>
+      </Label>
+      <Label>
         Cooked
         <input
           name="cooked"
           type="checkbox"
           onChange={handleInputChange}
         />
-      </label>
-    </form>
+      </Label>
+    </FilterForm>
   );
 }

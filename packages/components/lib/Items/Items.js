@@ -1,52 +1,79 @@
 import io from 'socket.io-client';
+import { sizing, flexbox } from '@material-ui/system';
+import styled from 'styled-components';
 import { useState, useContext } from 'react';
 import { actions, constants, StoreContext } from '@css/redux';
-import { flexbox } from '@material-ui/system';
-import styled from 'styled-components';
-
 import Item from '../Item/Item';
+import HistoricalItem from '../Item/HistoricalItem';
 
 const socket = io(process.env.SERVER_URL);
-
-const {updateItem} = actions;
-
+const {changeItemView, updateItem} = actions;
 const {
   UPDATE_ITEM,
   UPDATE_ITEM_SUCCESS,
   UPDATE_ITEM_FAILED
 } = constants;
+const {deliveryStates} = constants;
+const {
+  DELIVERED,
+  CANCELLED
+} = deliveryStates;
+const inActiveStates = [DELIVERED, CANCELLED];
+
+const ItemsContainer = styled.div`
+  overflow: scroll;
+  ${sizing}
+`;
+
+const ViewContainer = styled.div`
+  cursor: pointer;
+  width: 50%;
+  ${sizing}
+`;
+
+const FlexContainer = styled.div`
+  display: flex;
+  width: 100%;
+  ${flexbox}
+  ${sizing}
+`;
 
 export default () => {
-  const [state, setState] = useState({})
   const {
     dispatch,
-    state: {items}
-  } = useContext(StoreContext);
-  const itemKeys = [
-    `event_name`,
-    `name`,
-    `destination`,
-    `button`
-  ];
-  const handleInputChange = (id, key) => (e) => {
-    const {value} = e.target;
+    state: {items, updating, view, filter}
+  } = useContext(StoreContext)
+  const [state, setState] = useState({});
+  const handleChange = (id) => (e) => {
+    const {name, value} = e.target;
 
     setState((prevState) => ({
       ...prevState,
       [id]: {
-        [key]: value
+        [name]: value
       }
     }));
   };
-  const handleInputUpdate = (id) => (e) => {
+
+  const handleSubmit = (id) => (e) => {
     e.preventDefault();
 
-    const updateData = {...state[id], id};
-    const update = (type) => dispatch(updateItem(updateData, type));
+    const stateData = state[id];
+
+    if (!stateData) return null;
+
+    const data = {
+      ...stateData,
+      id
+    };
+
+    const update = (type) => dispatch(
+      updateItem(data, type)
+    );
 
     update(UPDATE_ITEM)
 
-    socket.emit('update', updateData, (err) => {
+    socket.emit('update', data, (err) => {
       if (err) {
         return update(UPDATE_ITEM_FAILED);
       }
@@ -55,48 +82,44 @@ export default () => {
     });
   };
 
-  const itemsList = items.reduce((list, item) => {
-    itemKeys.forEach((itemKey, i) => {
-      if (!Array.isArray(list[i])) list[i] = [];
+  const handleClick = (view) => () => {
+    dispatch(changeItemView(view));
+  };
 
-      const {id, sent_at_second} = item;
-      const key = id + sent_at_second + itemKey;
-      const content = state[id] && state[id][itemKey] || item[itemKey];
+  const filteredItems = items.filter(({event_name}) => {
+    const isInactive = inActiveStates.includes(event_name);
 
-      if (itemKey === `button`) {
-        list[i].push(
-          <div key={key}>
-            <button onClick={handleInputUpdate(id)}>
-              Update
-            </button>
-          </div>
-        );
-      } else {
-        list[i].push(
-          <Item
-            handleInputChange={handleInputChange(id, itemKey)}
-            content={content}
-            key={key}
-          />
-        );
-      }
-    });
-
-    return list;
-  }, [])
-
-  const ItemContainer = styled.div`
-    display: flex;
-    ${flexbox}
-  `;
+    switch(view) {
+      case `historical`:
+        return isInactive;
+        break;
+      default:
+        return filter.length ? filter.includes(event_name) : !isInactive;
+        break;
+    }
+  });
 
   return (
-    <ItemContainer flexGrow={1}>
-      {itemsList.map((list, i) => (
-        <div key={`item-column-${i}`}>
-          {list}
-        </div>
+    <ItemsContainer width={3/4} height="100vh">
+      <FlexContainer>
+        <ViewContainer onClick={handleClick(`active`)}>
+          <p>View Active</p>
+        </ViewContainer>
+        <ViewContainer onClick={handleClick(`historical`)}>
+          <p>View Historical</p>
+        </ViewContainer>
+      </FlexContainer>
+      {filteredItems.map(({event_name, destination, name, id, sent_at_second}) => (
+        <Item
+          key={`${id}-${sent_at_second}`}
+          eventName={event_name}
+          name={state[id]?.name || name}
+          destination={state[id]?.destination || destination}
+          disabled={updating.includes(id)}
+          handleChange={handleChange(id)}
+          handleSubmit={handleSubmit(id)}
+        />
       ))}
-    </ItemContainer>
+    </ItemsContainer>
   );
 };

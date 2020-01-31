@@ -35,7 +35,7 @@ io.on('connect', async (socket) => {
     }
   });
 
-  setInterval(async () => {
+  const id = setInterval(async () => {
     // potentially cache
     const data = await readJson(jsonFp);
     const items = data.filter(({sent_at_second: s}) => s <= i);
@@ -43,6 +43,8 @@ io.on('connect', async (socket) => {
     socket.emit('data', {items});
 
     i += 1;
+
+    // if (i > 5) clearInterval(id);
   }, 1000);
 });
 
