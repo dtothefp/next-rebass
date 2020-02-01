@@ -1,11 +1,13 @@
 "use strict";
 
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _react = require("react");
+var _react = _interopRequireWildcard(require("react"));
 
 var _rebass = require("rebass");
 
@@ -19,30 +21,30 @@ var _default = (0, _react.memo)(function Item({
   handleChange,
   handleSubmit
 }) {
-  return __jsx(_rebass.Flex, {
+  return _react.default.createElement(_rebass.Flex, {
     as: "form",
     onSubmit: handleSubmit
-  }, __jsx(_rebass.Box, {
+  }, _react.default.createElement(_rebass.Box, {
     width: 1 / 6
-  }, __jsx(_rebass.Text, {
+  }, _react.default.createElement(_rebass.Text, {
     m: 0
-  }, eventName)), __jsx(_rebass.Box, {
+  }, eventName)), _react.default.createElement(_rebass.Box, {
     width: 1 / 3
-  }, __jsx(_forms.Input, {
+  }, _react.default.createElement(_forms.Input, {
     type: "text",
     name: "name",
     value: name,
     onChange: handleChange
-  })), __jsx(_rebass.Box, {
+  })), _react.default.createElement(_rebass.Box, {
     width: 1 / 3
-  }, __jsx(_forms.Input, {
+  }, _react.default.createElement(_forms.Input, {
     type: "text",
     name: "destination",
     value: destination,
     onChange: handleChange
-  })), __jsx(_rebass.Box, {
+  })), _react.default.createElement(_rebass.Box, {
     width: 1 / 6
-  }, __jsx(_rebass.Button, null, "Update")));
+  }, _react.default.createElement(_rebass.Button, null, "Update")));
 });
 
 exports.default = _default;

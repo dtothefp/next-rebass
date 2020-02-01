@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import { Box } from 'rebass';
-import { Label, Checkbox } from '@rebass/forms';
+import { Box, Card, Text } from 'rebass';
+import { Checkbox, Label } from '@rebass/forms';
 import {
   actions,
   StoreContext
@@ -11,9 +11,30 @@ const {
   removeFilterItem
 } = actions;
 
+const FilterBox = ({children, handleChange, top, bottom}) => (
+    <Label
+      sx={{
+        borderStyle: 'solid',
+        borderWidth: '1px',
+        borderLeft: '0',
+        borderRight: '0',
+        borderBottom: bottom ? false : '0',
+        borderColor: 'primary'
+      }}
+      py={2}
+      pl={2}
+    >
+      <Checkbox
+        name="created"
+        onChange={handleChange}
+        sx={{position: 'relative', top: '-4px'}}/>
+      {children}
+    </Label>
+);
+
 export default () => {
   const {dispatch} = useContext(StoreContext);
-  const handleInputChange = ((e) => {
+  const handleChange = ((e) => {
     const {checked, name} = e.target;
 
     dispatch(
@@ -22,23 +43,39 @@ export default () => {
   });
 
   return (
-    <Box width={ 1/4 }>
-      <form>
-        <Label>
-          <Checkbox
-            name="created"
-            onChange={handleInputChange}
-          />
-          Created
-        </Label>
-        <Label>
-          <Checkbox
-            name="cooked"
-            onChange={handleInputChange}
-          />
-          Cooked
-        </Label>
-      </form>
+    <Box
+      sx={{
+        position: 'relative'
+      }}
+      width={ 1/4 }
+      py={4}
+      px={3}
+    >
+      <Card
+        sx={{
+          position: 'fixed',
+          borderStyle: 'solid',
+          borderWidth: '3px',
+          borderLeft: '0',
+          borderRight: '0',
+          borderColor: 'primary'
+        }}
+        width="22%"
+        p={0}
+      >
+        <Text
+          py={3}
+          pl={2}
+          as="h5"
+          fontSize={2}
+        >Filter Orders By Status</Text>
+        <Box
+          as="form"
+        >
+          <FilterBox top>Created</FilterBox>
+          <FilterBox bottom>Cooked</FilterBox>
+        </Box>
+      </Card>
     </Box>
   );
 }

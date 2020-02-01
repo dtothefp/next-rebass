@@ -1,3 +1,4 @@
+import React from "react";
 import io from 'socket.io-client';
 import { useState, useContext } from 'react';
 import { actions, constants, StoreContext } from '@css/redux';
@@ -87,15 +88,15 @@ export default (() => {
   const sx = {
     cursor: 'pointer'
   };
-  return __jsx(Box, {
+  return React.createElement(Box, {
     width: 3 / 4,
     height: "100vh"
-  }, __jsx(Flex, null, __jsx(Button, {
+  }, React.createElement(Flex, null, React.createElement(Button, {
     sx: sx,
     width: 1 / 2,
     variant: "primary",
     onClick: handleClick("active")
-  }, "View Active"), __jsx(Button, {
+  }, "View Active"), React.createElement(Button, {
     sx: sx,
     width: 1 / 2,
     variant: "secondary",
@@ -106,7 +107,7 @@ export default (() => {
     name,
     id,
     sent_at_second
-  }) => __jsx(Item, {
+  }) => React.createElement(Item, {
     key: "".concat(id, "-").concat(sent_at_second),
     eventName: event_name,
     name: state[id]?.name || name,

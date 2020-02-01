@@ -20,6 +20,7 @@ function _templateObject() {
   return data;
 }
 
+import React from "react";
 import { memo } from 'react';
 import { flexbox, spacing } from '@material-ui/system';
 import styled from 'styled-components';
@@ -30,5 +31,5 @@ export default memo(function Item({
   name,
   destination
 }) {
-  return __jsx(FlexContainer, null, __jsx("div", null, __jsx(Item, null, eventName)), __jsx("div", null, __jsx(Item, null, name)), __jsx("div", null, __jsx(Item, null, destination)));
+  return React.createElement(FlexContainer, null, React.createElement("div", null, React.createElement(Item, null, eventName)), React.createElement("div", null, React.createElement(Item, null, name)), React.createElement("div", null, React.createElement(Item, null, destination)));
 });

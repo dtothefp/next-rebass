@@ -2,14 +2,16 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _socket = _interopRequireDefault(require("socket.io-client"));
+var _react = _interopRequireWildcard(require("react"));
 
-var _react = require("react");
+var _socket = _interopRequireDefault(require("socket.io-client"));
 
 var _redux = require("@css/redux");
 
@@ -102,15 +104,15 @@ var _default = () => {
   const sx = {
     cursor: 'pointer'
   };
-  return __jsx(_rebass.Box, {
+  return _react.default.createElement(_rebass.Box, {
     width: 3 / 4,
     height: "100vh"
-  }, __jsx(_rebass.Flex, null, __jsx(_rebass.Button, {
+  }, _react.default.createElement(_rebass.Flex, null, _react.default.createElement(_rebass.Button, {
     sx: sx,
     width: 1 / 2,
     variant: "primary",
     onClick: handleClick(`active`)
-  }, "View Active"), __jsx(_rebass.Button, {
+  }, "View Active"), _react.default.createElement(_rebass.Button, {
     sx: sx,
     width: 1 / 2,
     variant: "secondary",
@@ -121,7 +123,7 @@ var _default = () => {
     name,
     id,
     sent_at_second
-  }) => __jsx(_Item.default, {
+  }) => _react.default.createElement(_Item.default, {
     key: `${id}-${sent_at_second}`,
     eventName: event_name,
     name: state[id]?.name || name,

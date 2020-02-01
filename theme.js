@@ -2,16 +2,17 @@
   colors: {
     text: '#000',
     background: '#fff',
-    primary: '#07c',
-    secondary: '#30c',
-    muted: '#f6f6f9',
-    gray: '#dddddf',
-    highlight: 'hsla(205, 100%, 40%, 0.125)'
+    primary: '#7395AE',
+    secondary: '#557A95',
+    muted: '#379683',
+    gray: '#5D5C61',
+    highlight: '#51A296'
   },
   fonts: {
     body: 'system-ui, sans-serif',
     heading: 'inherit',
-    monospace: 'Menlo, monospace' },
+    monospace: 'Menlo, monospace'
+  },
     fontSizes: [ 12, 14, 16, 20, 24, 32, 48, 64, 96 ],
     fontWeights: { body: 400, heading: 700, bold: 700 },
     lineHeights: { body: 1.5, heading: 1.25 },

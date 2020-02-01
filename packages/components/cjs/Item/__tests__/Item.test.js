@@ -10,7 +10,7 @@ var _Item = _interopRequireDefault(require("../Item"));
 
 describe('#Item', () => {
   const handleSubmit = jest.fn();
-  const wrapper = (0, _enzyme.mount)(__jsx(_Item.default, {
+  const wrapper = (0, _enzyme.mount)(_react.default.createElement(_Item.default, {
     handleSubmit: handleSubmit
   }));
   it('incrementally emits data', () => {

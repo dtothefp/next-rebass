@@ -1,11 +1,13 @@
 "use strict";
 
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _react = require("react");
+var _react = _interopRequireWildcard(require("react"));
 
 var _rebass = require("rebass");
 
@@ -31,12 +33,12 @@ var _default = () => {
     dispatch(checked ? filterItem(name) : removeFilterItem(name));
   };
 
-  return __jsx(_rebass.Box, {
+  return _react.default.createElement(_rebass.Box, {
     width: 1 / 4
-  }, __jsx("form", null, __jsx(_forms.Label, null, __jsx(_forms.Checkbox, {
+  }, _react.default.createElement("form", null, _react.default.createElement(_forms.Label, null, _react.default.createElement(_forms.Checkbox, {
     name: "created",
     onChange: handleInputChange
-  }), "Created"), __jsx(_forms.Label, null, __jsx(_forms.Checkbox, {
+  }), "Created"), _react.default.createElement(_forms.Label, null, _react.default.createElement(_forms.Checkbox, {
     name: "cooked",
     onChange: handleInputChange
   }), "Cooked")));

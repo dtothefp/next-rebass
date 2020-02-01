@@ -1,3 +1,4 @@
+import React from "react";
 import { memo } from 'react';
 import { Box, Button, Flex, Text } from 'rebass';
 import { Input } from '@rebass/forms';
@@ -9,28 +10,28 @@ export default memo(function Item({
   handleChange,
   handleSubmit
 }) {
-  return __jsx(Flex, {
+  return React.createElement(Flex, {
     as: "form",
     onSubmit: handleSubmit
-  }, __jsx(Box, {
+  }, React.createElement(Box, {
     width: 1 / 6
-  }, __jsx(Text, {
+  }, React.createElement(Text, {
     m: 0
-  }, eventName)), __jsx(Box, {
+  }, eventName)), React.createElement(Box, {
     width: 1 / 3
-  }, __jsx(Input, {
+  }, React.createElement(Input, {
     type: "text",
     name: "name",
     value: name,
     onChange: handleChange
-  })), __jsx(Box, {
+  })), React.createElement(Box, {
     width: 1 / 3
-  }, __jsx(Input, {
+  }, React.createElement(Input, {
     type: "text",
     name: "destination",
     value: destination,
     onChange: handleChange
-  })), __jsx(Box, {
+  })), React.createElement(Box, {
     width: 1 / 6
-  }, __jsx(Button, null, "Update")));
+  }, React.createElement(Button, null, "Update")));
 });

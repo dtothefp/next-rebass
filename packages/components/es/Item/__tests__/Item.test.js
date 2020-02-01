@@ -3,7 +3,7 @@ import { shallow, mount } from 'enzyme';
 import Item from '../Item';
 describe('#Item', () => {
   const handleSubmit = jest.fn();
-  const wrapper = mount(__jsx(Item, {
+  const wrapper = mount(React.createElement(Item, {
     handleSubmit: handleSubmit
   }));
   it('incrementally emits data', () => {

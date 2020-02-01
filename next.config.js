@@ -12,7 +12,7 @@ module.exports = withPlugins([withTM, withESLint, withCustomBabelConfigFile], {
   babelConfigFile: path.join(__dirname, `babel.config.js`),
   assetPrefix,
   env: {
-    SERVER_URL: 'http://localhost:3000',
+    SERVER_URL: process.env.SERVER_URL || 'http://localhost:3000',
   },
   eslintLoaderOptions: {
     // failOnWarning: true,
@@ -20,8 +20,6 @@ module.exports = withPlugins([withTM, withESLint, withCustomBabelConfigFile], {
     quiet: false,
   },
   webpack(config, { dev, isServer }) {
-
-
     if (dev) {
       Object.assign(config.resolve.alias, alias());
     }
@@ -29,6 +27,14 @@ module.exports = withPlugins([withTM, withESLint, withCustomBabelConfigFile], {
     if (isServer) {
       config.resolve.mainFields.reverse();
     }
+
+
+    config.module.rules.push(
+      {
+        test: /\.svg$/,
+        use: `svg-react-loader`,
+      },
+    );
 
     return config;
   }

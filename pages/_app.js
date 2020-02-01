@@ -9,6 +9,18 @@ import emotionNormalize from 'emotion-normalize';
 
 const cache = createCache();
 
+Object.assign(theme, {
+  colors: {
+    text: '#000',
+    background: '#fff',
+    primary: '#7395AE',
+    secondary: '#557A95',
+    muted: '#379683',
+    gray: '#5D5C61',
+    highlight: '#51A296'
+  },
+});
+
 export default class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {};

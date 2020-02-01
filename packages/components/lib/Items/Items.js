@@ -18,6 +18,20 @@ const {
 } = deliveryStates;
 const inActiveStates = [DELIVERED, CANCELLED];
 
+const ViewButton = ({active, variant, children, handleClick}) => (
+    <Button
+      sx={{
+        borderRadius: '0 0 10px 10px',
+        cursor: 'pointer'
+      }}
+      width={1/2}
+      variant={variant}
+      onClick={handleClick}
+    >
+      {children}
+    </Button>
+);
+
 export default () => {
   const {
     dispatch,
@@ -86,23 +100,20 @@ export default () => {
   return (
     <Box width={3/4} height="100vh">
       <Flex>
-        <Button
-          sx={sx}
-          width={1/2}
+        <ViewButton
           variant='primary'
-          onClick={handleClick(`active`)}
-        >View Active</Button>
-        <Button
-          sx={sx}
-          width={1/2}
+          handleClick={handleClick(`active`)}
+        >Active Orders</ViewButton>
+        <ViewButton
           variant='secondary'
-          onClick={handleClick(`historical`)}>Button</Button>
+          handleClick={handleClick(`historical`)}>Historical Orders</ViewButton>
       </Flex>
-      {filteredItems.map(({event_name, destination, name, id, sent_at_second}) => (
+      {filteredItems.map(({event_name, destination, name, id, sent_at_second}, i) => (
         <Item
           key={`${id}-${sent_at_second}`}
           eventName={event_name}
           name={state[id]?.name || name}
+          bg={i % 2 === 0 ? 'grey' : 'white'}
           destination={state[id]?.destination || destination}
           disabled={updating.includes(id)}
           handleChange={handleChange(id)}

@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import { useEffect } from 'react';
 import { reducer, actions, createStore, StoreContext } from '@css/redux';
-import { Container } from '@css/components';
+import { Container, Header } from '@css/components';
 
 export default () => {
   const initialState = {
@@ -21,6 +21,7 @@ export default () => {
 
   return (
     <StoreContext.Provider value={{state, dispatch}}>
+      <Header />
       <Container />
     </StoreContext.Provider>
   );

@@ -2,12 +2,14 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
 
-var _react = require("react");
+var _react = _interopRequireWildcard(require("react"));
 
 var _system = require("@material-ui/system");
 
@@ -27,7 +29,7 @@ var _default = (0, _react.memo)(function Item({
   name,
   destination
 }) {
-  return __jsx(FlexContainer, null, __jsx("div", null, __jsx(Item, null, eventName)), __jsx("div", null, __jsx(Item, null, name)), __jsx("div", null, __jsx(Item, null, destination)));
+  return _react.default.createElement(FlexContainer, null, _react.default.createElement("div", null, _react.default.createElement(Item, null, eventName)), _react.default.createElement("div", null, _react.default.createElement(Item, null, name)), _react.default.createElement("div", null, _react.default.createElement(Item, null, destination)));
 });
 
 exports.default = _default;

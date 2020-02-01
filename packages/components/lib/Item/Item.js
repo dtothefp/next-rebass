@@ -8,14 +8,15 @@ export default memo(function Item({
   destination,
   disabled,
   handleChange,
-  handleSubmit
+  handleSubmit,
+  // bg
 }) {
   return (
     <Flex as="form" onSubmit={handleSubmit}>
-      <Box width={1/6}>
+      <Box width="10%">
         <Text m={0}>{eventName}</Text>
       </Box>
-      <Box width={1/3}>
+      <Box width="40%">
         <Input
           type="text"
           name="name"
@@ -23,7 +24,7 @@ export default memo(function Item({
           onChange={handleChange}
         />
       </Box>
-      <Box width={1/3}>
+      <Box width="40%">
         <Input
           type="text"
           name="destination"
@@ -31,8 +32,10 @@ export default memo(function Item({
           onChange={handleChange}
         />
       </Box>
-      <Box width={1/6}>
-        <Button>Update</Button>
+      <Box width="10%">
+        <Button
+          sx={{borderRadius: '0'}}
+          width="100%">Update</Button>
       </Box>
     </Flex>
   );

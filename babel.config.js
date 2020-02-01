@@ -14,10 +14,7 @@ module.exports = (api) => {
             node: 'current'
           }
         }],
-        [ '@babel/preset-react', {
-          development: false,
-          pragma: '__jsx',
-        }]
+        [ '@babel/preset-react', {development: false}]
       ],
       plugins: [
         ['@babel/plugin-transform-runtime', {
@@ -26,6 +23,7 @@ module.exports = (api) => {
           regenerator: false,
           useESModules: false
         }],
+        'react-require',
         '@babel/plugin-proposal-export-namespace-from'
       ]
     }
@@ -35,10 +33,7 @@ module.exports = (api) => {
     return {
       presets: [
         [ '@babel/preset-env', {modules: false} ],
-        [ '@babel/preset-react', {
-          development: false,
-          pragma: '__jsx',
-        }]
+        [ '@babel/preset-react', {development: false}]
       ],
       plugins: [
         [
@@ -48,6 +43,7 @@ module.exports = (api) => {
             regenerator: false,
             useESModules: true
         }],
+        'react-require',
         '@babel/plugin-proposal-export-namespace-from'
       ]
     }
