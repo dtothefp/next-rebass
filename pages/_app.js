@@ -1,11 +1,13 @@
 import App from 'next/app';
 import React from 'react';
-import { StylesProvider } from '@material-ui/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { ThemeProvider } from 'styled-components';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { CacheProvider } from '@emotion/react'
+import createCache from '@emotion/cache';
+import { ThemeProvider } from 'emotion-theming';
+import theme from '@rebass/preset';
+import { Global, css } from '@emotion/core';
+import emotionNormalize from 'emotion-normalize';
 
-const theme = createMuiTheme();
+const cache = createCache();
 
 export default class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -18,24 +20,27 @@ export default class MyApp extends App {
     return { pageProps };
   }
 
-  componentDidMount() {
-    const serverJss = document.querySelector(`#jss-server-side`);
-
-    if (serverJss && serverJss.parentNode) {
-      serverJss.parentNode.removeChild(serverJss);
-    }
-  }
-
   render() {
     const { Component, pageProps } = this.props;
 
     return (
-      <StylesProvider injectFirst>
-        <CssBaseline />
-        <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
+        <CacheProvider value={cache}>
+          <Global
+            styles={css`
+              ${emotionNormalize}
+              html,
+              body {
+                padding: 0;
+                margin: 0;
+                min-height: 100%;
+                font-family: Helvetica, Arial, sans-serif;
+              }
+            `}
+          />
           <Component {...pageProps} />
-        </ThemeProvider>
-      </StylesProvider>
+        </CacheProvider>
+      </ThemeProvider>
     );
   }
 }

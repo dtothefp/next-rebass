@@ -1,0 +1,15 @@
+version: '3'
+services:
+  appt:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    image: css_app_dev
+    container_name: css_app_dev
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      NODE_ENV: development

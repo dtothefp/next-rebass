@@ -1,10 +1,8 @@
 import io from 'socket.io-client';
-import { sizing, flexbox } from '@material-ui/system';
-import styled from 'styled-components';
 import { useState, useContext } from 'react';
 import { actions, constants, StoreContext } from '@css/redux';
+import { Box, Flex, Button } from 'rebass';
 import Item from '../Item/Item';
-import HistoricalItem from '../Item/HistoricalItem';
 
 const socket = io(process.env.SERVER_URL);
 const {changeItemView, updateItem} = actions;
@@ -19,24 +17,6 @@ const {
   CANCELLED
 } = deliveryStates;
 const inActiveStates = [DELIVERED, CANCELLED];
-
-const ItemsContainer = styled.div`
-  overflow: scroll;
-  ${sizing}
-`;
-
-const ViewContainer = styled.div`
-  cursor: pointer;
-  width: 50%;
-  ${sizing}
-`;
-
-const FlexContainer = styled.div`
-  display: flex;
-  width: 100%;
-  ${flexbox}
-  ${sizing}
-`;
 
 export default () => {
   const {
@@ -99,16 +79,25 @@ export default () => {
     }
   });
 
+  const sx = {
+    cursor: 'pointer'
+  };
+
   return (
-    <ItemsContainer width={3/4} height="100vh">
-      <FlexContainer>
-        <ViewContainer onClick={handleClick(`active`)}>
-          <p>View Active</p>
-        </ViewContainer>
-        <ViewContainer onClick={handleClick(`historical`)}>
-          <p>View Historical</p>
-        </ViewContainer>
-      </FlexContainer>
+    <Box width={3/4} height="100vh">
+      <Flex>
+        <Button
+          sx={sx}
+          width={1/2}
+          variant='primary'
+          onClick={handleClick(`active`)}
+        >View Active</Button>
+        <Button
+          sx={sx}
+          width={1/2}
+          variant='secondary'
+          onClick={handleClick(`historical`)}>Button</Button>
+      </Flex>
       {filteredItems.map(({event_name, destination, name, id, sent_at_second}) => (
         <Item
           key={`${id}-${sent_at_second}`}
@@ -120,6 +109,6 @@ export default () => {
           handleSubmit={handleSubmit(id)}
         />
       ))}
-    </ItemsContainer>
+    </Box>
   );
 };

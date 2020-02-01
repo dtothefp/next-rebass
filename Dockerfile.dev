@@ -1,0 +1,15 @@
+FROM node:12
+
+MAINTAINER dtothefp
+
+RUN mkdir -p /usr/src/app
+
+COPY ./ /usr/src/app
+WORKDIR /usr/src/app
+
+RUN yarn
+ENV NODE_ENV=development
+
+EXPOSE 3000
+
+CMD ["yarn", "dev"]

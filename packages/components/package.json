@@ -1,6 +1,15 @@
 {
   "name": "@css/components",
   "version": "1.0.0",
-  "main": "lib/index.js",
-  "license": "MIT"
+  "main": "cjs/index.js",
+  "module": "es/index.js",
+  "license": "MIT",
+  "scripts": {
+    "compile:cjs": "BABEL_ENV=cjs babel --root-mode upward ./lib --out-dir ./cjs",
+    "compile:es": "BABEL_ENV=es babel --root-mode upward ./lib --out-dir ./es",
+    "build": "npm-run-all compile:cjs compile:es"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.8.4"
+  }
 }
