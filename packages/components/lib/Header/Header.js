@@ -2,7 +2,7 @@ import { Flex, Image } from 'rebass';
 
 export default () => (
     <Flex
-      bg="muted"
+      bg="primary"
       p={3}
     >
       <Image

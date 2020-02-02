@@ -13,8 +13,8 @@ Object.assign(theme, {
   colors: {
     text: `#000`,
     background: `#fff`,
-    primary: `#7395AE`,
-    secondary: `#557A95`,
+    primary: `#000`,
+    secondary: `#bf1866`,
     muted: `#379683`,
     gray: `#efefef`,
     highlight: `#51A296`,
