@@ -14,6 +14,7 @@
     "serve": "NODE_ENV=production node server.js",
     "lint": "eslint .",
     "test": "jest",
+    "test:debug": "node --inspect-brk $(which jest)",
     "lerna": "lerna"
   },
   "dependencies": {
