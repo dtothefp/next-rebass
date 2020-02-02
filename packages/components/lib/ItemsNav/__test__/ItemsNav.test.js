@@ -1,12 +1,12 @@
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
+import { mount, render } from 'enzyme';
 import { constants, StoreContext } from '@css/redux';
 import ItemsNav from '../ItemsNav';
 
 const {Provider} = StoreContext;
 const {ACTIVE_VIEW, HISTORICAL_VIEW} = constants;
 
-describe('#ItemsNav', () => {
+describe(`#ItemsNav`, () => {
   const dispatch = jest.fn();
   const state = {view: ACTIVE_VIEW}
 
@@ -14,7 +14,7 @@ describe('#ItemsNav', () => {
     dispatch.mockClear();
   });
 
-  it('renders', () => {
+  it(`renders`, () => {
     expect(
       render(
         <Provider value={{dispatch, state}}>
@@ -24,14 +24,14 @@ describe('#ItemsNav', () => {
     ).toMatchSnapshot();
   });
 
-  it('dispatches upon clicking enabled button', () => {
+  it(`dispatches upon clicking enabled button`, () => {
     const wrapper = mount(
       <Provider value={{dispatch, state}}>
         <ItemsNav />
       </Provider>
     );
 
-    const buttons = wrapper.find('button');
+    const buttons = wrapper.find(`button`);
     const activeButton = buttons.first();
     const historicalButton = buttons.last();
 
@@ -41,7 +41,7 @@ describe('#ItemsNav', () => {
     expect(activeButton.props().disabled).toBeTruthy();
     expect(!historicalButton.props().disabled).toBeTruthy();
 
-    historicalButton.simulate('click');
+    historicalButton.simulate(`click`);
 
     expect(dispatch.mock.calls.length).toBe(1);
     expect(dispatch.mock.calls[0][0].view).toBe(HISTORICAL_VIEW);

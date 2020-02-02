@@ -59,11 +59,14 @@ const Items = () => {
       name,
       value
     } = e.target;
-    setState(prevState => ({ ...prevState,
-      [id]: {
+    setState(prevState => {
+      const itemState = { ...prevState[id],
         [name]: value
-      }
-    }));
+      };
+      return { ...prevState,
+        [id]: itemState
+      };
+    });
   };
 
   const handleSubmit = id => e => {

@@ -57,10 +57,11 @@ EventIcon.propTypes = {
 const DataInput = ({
   disabled,
   handleChange,
+  historical,
   name,
   value
 }) => _react.default.createElement(_rebass.Box, {
-  width: "40%"
+  width: historical && name === `destination` ? `50%` : `40%`
 }, _react.default.createElement(_forms.Input, {
   type: "text",
   name: name,
@@ -76,6 +77,7 @@ const DataInput = ({
 DataInput.propTypes = {
   disabled: _propTypes.default.bool,
   handleChange: _propTypes.default.func,
+  historical: _propTypes.default.bool,
   name: _propTypes.default.string,
   value: _propTypes.default.string
 }; // HACK: doesn't seem easy to do keyframes in Rebass with Emotion so must use Styled Components. This isn't optimal because
@@ -102,8 +104,7 @@ const Container = (0, _styledComponents.default)(_rebass.Box)`
   background-size: 300%;
   animation: 1.5s ${animation} infinite;
 `;
-
-const Item = ({
+const Item = (0, _react.memo)(({
   destination,
   eventName,
   handleChange,
@@ -135,26 +136,26 @@ const Item = ({
     name: "name",
     value: name,
     handleChange: handleChange,
-    disabled: disabled
+    disabled: disabled,
+    historical: isHistorical
   }), _react.default.createElement(DataInput, {
     name: "destination",
     value: destination,
     handleChange: handleChange,
-    disabled: disabled
-  }), _react.default.createElement(_rebass.Box, {
+    disabled: disabled,
+    historical: isHistorical
+  }), isHistorical ? null : _react.default.createElement(_rebass.Box, {
     width: "10%"
   }, _react.default.createElement(_rebass.Button, {
     disabled: disabled,
     sx: {
       borderRadius: `0`,
-      cursor: `pointer`,
-      display: isHistorical ? `none` : false
+      cursor: `pointer`
     },
     bg: "muted",
     width: "100%"
   }, "Update")));
-};
-
+});
 Item.propTypes = {
   destination: _propTypes.default.string,
   eventName: _propTypes.default.string,

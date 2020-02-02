@@ -65,10 +65,11 @@ EventIcon.propTypes = {
 const DataInput = ({
   disabled,
   handleChange,
+  historical,
   name,
   value
 }) => React.createElement(Box, {
-  width: "40%"
+  width: historical && name === "destination" ? "50%" : "40%"
 }, React.createElement(Input, {
   type: "text",
   name: name,
@@ -84,6 +85,7 @@ const DataInput = ({
 DataInput.propTypes = {
   disabled: PropTypes.bool,
   handleChange: PropTypes.func,
+  historical: PropTypes.bool,
   name: PropTypes.string,
   value: PropTypes.string
 }; // HACK: doesn't seem easy to do keyframes in Rebass with Emotion so must use Styled Components. This isn't optimal because
@@ -99,8 +101,7 @@ const calculateGradient = ({
 }) => idx % 2 === 0 ? "linear-gradient(-45deg, ".concat(bgc, " 35%, white, ").concat(bgc, " 65%, ").concat(bgc, ")") : "none";
 
 const Container = styledC(Box)(_templateObject3(), calculateGradient, animation);
-
-const Item = ({
+const Item = memo(({
   destination,
   eventName,
   handleChange,
@@ -132,26 +133,26 @@ const Item = ({
     name: "name",
     value: name,
     handleChange: handleChange,
-    disabled: disabled
+    disabled: disabled,
+    historical: isHistorical
   }), React.createElement(DataInput, {
     name: "destination",
     value: destination,
     handleChange: handleChange,
-    disabled: disabled
-  }), React.createElement(Box, {
+    disabled: disabled,
+    historical: isHistorical
+  }), isHistorical ? null : React.createElement(Box, {
     width: "10%"
   }, React.createElement(Button, {
     disabled: disabled,
     sx: {
       borderRadius: "0",
-      cursor: "pointer",
-      display: isHistorical ? "none" : false
+      cursor: "pointer"
     },
     bg: "muted",
     width: "100%"
   }, "Update")));
-};
-
+});
 Item.propTypes = {
   destination: PropTypes.string,
   eventName: PropTypes.string,

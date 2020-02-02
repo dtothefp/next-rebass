@@ -16,8 +16,8 @@ const {
 } = constants;
 const {CREATED} = deliveryStates
 
-describe('#reducer', () => {
-  it('adds and sorts items', () => {
+describe(`#reducer`, () => {
+  it(`adds and sorts items`, () => {
     const newItems = [{sent_at_second: 3}, {sent_at_second: 2}];
     const state = reducer({items: []}, addItems(newItems));
 
@@ -27,7 +27,7 @@ describe('#reducer', () => {
     });
   });
 
-  it('adds an item filter', () => {
+  it(`adds an item filter`, () => {
     const state = reducer({filter: []}, filterItem(CREATED));
 
     expect(state).toEqual({
@@ -35,7 +35,7 @@ describe('#reducer', () => {
     });
   });
 
-  it('removes an item filter', () => {
+  it(`removes an item filter`, () => {
     const state = reducer({filter: [CREATED]}, removeFilterItem(CREATED));
 
     expect(state).toEqual({
@@ -43,8 +43,8 @@ describe('#reducer', () => {
     });
   });
 
-  it('add an item to updating state', () => {
-    const id = 'ID';
+  it(`add an item to updating state`, () => {
+    const id = `ID`;
     const state = reducer({updating: []}, updateItem({id}, UPDATE_ITEM));
 
     expect(state).toEqual({
@@ -52,8 +52,8 @@ describe('#reducer', () => {
     });
   });
 
-  it('removes item from updating state upon success', () => {
-    const id = 'ID';
+  it(`removes item from updating state upon success`, () => {
+    const id = `ID`;
     const state = reducer({updating: [id]}, updateItem({id}, UPDATE_ITEM_SUCCESS));
 
     expect(state).toEqual({
@@ -61,8 +61,8 @@ describe('#reducer', () => {
     });
   });
 
-  it('removes item from updating state upon failure', () => {
-    const id = 'ID';
+  it(`removes item from updating state upon failure`, () => {
+    const id = `ID`;
     const state = reducer({updating: [id]}, updateItem({id}, UPDATE_ITEM_FAILED));
 
     expect(state).toEqual({
@@ -70,9 +70,9 @@ describe('#reducer', () => {
     });
   });
 
-  if('updates the item view', () => {
-    const viewA = 'VIEW-A';
-    const viewB = 'VIEW-B';
+  it(`updates the item view`, () => {
+    const viewA = `VIEW-A`;
+    const viewB = `VIEW-B`;
     let state = reducer({}, changeItemView(viewA));
 
     expect(state).toEqual({

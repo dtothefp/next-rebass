@@ -8,6 +8,7 @@ import Item from '../Item/Item';
 const {HISTORICAL_VIEW} = constants;
 
 const socket = io(process.env.SERVER_URL);
+
 const {updateItem} = actions;
 const {
   UPDATE_ITEM,
@@ -30,12 +31,17 @@ const Items = () => {
   const handleChange = (id) => (e) => {
     const {name, value} = e.target;
 
-    setState((prevState) => ({
-      ...prevState,
-      [id]: {
+    setState((prevState) => {
+      const itemState = {
+        ...prevState[id],
         [name]: value,
-      },
-    }));
+      };
+
+      return {
+        ...prevState,
+        [id]: itemState,
+      }
+    });
   };
 
   const handleSubmit = (id) => (e) => {

@@ -39,22 +39,15 @@ var _default = (state = {}, action) => {
       break;
 
     case _constants.UPDATE_ITEM_SUCCESS:
-      console.log(`*******`, action.item.id, state.updating.filter(({
-        id
-      }) => id !== action.item.id)); // TODO: WTD
-
+      // TODO: WTD
       updatedState = { ...state,
-        updating: state.updating.filter(({
-          id
-        }) => id === action.item.id)
+        updating: state.updating.filter(id => id !== action.item.id)
       };
       break;
 
     case _constants.UPDATE_ITEM_FAILED:
       updatedState = { ...state,
-        updating: state.updating.filter(({
-          id
-        }) => id !== action.item.id)
+        updating: state.updating.filter(id => id !== action.item.id)
       };
       break;
 
