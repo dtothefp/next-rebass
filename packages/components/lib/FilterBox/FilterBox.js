@@ -11,7 +11,7 @@ const {
   removeFilterItem
 } = actions;
 
-const FilterBox = ({children, handleChange, top, bottom}) => (
+const FilterBox = ({children, name, handleChange, top, bottom}) => (
     <Label
       sx={{
         borderStyle: 'solid',
@@ -19,15 +19,19 @@ const FilterBox = ({children, handleChange, top, bottom}) => (
         borderLeft: '0',
         borderRight: '0',
         borderBottom: bottom ? false : '0',
-        borderColor: 'primary'
+        borderColor: 'secondary'
       }}
       py={2}
       pl={2}
     >
       <Checkbox
-        name="created"
+        name={name}
         onChange={handleChange}
-        sx={{position: 'relative', top: '-4px'}}/>
+        sx={{
+          position: 'relative',
+          top: '-4px',
+          backgroundColor: 'transparent !important',
+        }}/>
       {children}
     </Label>
 );
@@ -48,7 +52,7 @@ export default () => {
         position: 'relative'
       }}
       width={ 1/4 }
-      py={4}
+      pt={5}
       px={3}
     >
       <Card
@@ -58,7 +62,7 @@ export default () => {
           borderWidth: '3px',
           borderLeft: '0',
           borderRight: '0',
-          borderColor: 'primary'
+          borderColor: 'secondary'
         }}
         width="22%"
         p={0}
@@ -72,8 +76,16 @@ export default () => {
         <Box
           as="form"
         >
-          <FilterBox top>Created</FilterBox>
-          <FilterBox bottom>Cooked</FilterBox>
+          <FilterBox
+            name="created"
+            handleChange={handleChange}
+            top
+          >Created</FilterBox>
+          <FilterBox
+            name="cooked"
+            handleChange={handleChange}
+            bottom
+          >Cooked</FilterBox>
         </Box>
       </Card>
     </Box>

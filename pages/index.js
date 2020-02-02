@@ -1,13 +1,26 @@
 import io from 'socket.io-client';
+import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 import { reducer, actions, createStore, StoreContext } from '@css/redux';
 import { Container, Header } from '@css/components';
+
+const NoSSRComponent = dynamic(
+  async () => {
+    const {Container} = await import('@css/components');
+
+    return Container;
+  },
+  {
+    ssr: false
+  }
+);
 
 export default () => {
   const initialState = {
     items: [],
     filter: [],
     updating: [],
+    view: 'active'
   };
   const {state, dispatch} = createStore(reducer, initialState);
 
@@ -22,7 +35,7 @@ export default () => {
   return (
     <StoreContext.Provider value={{state, dispatch}}>
       <Header />
-      <Container />
+      <NoSSRComponent />
     </StoreContext.Provider>
   );
 };

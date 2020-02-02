@@ -16,7 +16,7 @@ Object.assign(theme, {
     primary: '#7395AE',
     secondary: '#557A95',
     muted: '#379683',
-    gray: '#5D5C61',
+    gray: '#efefef',
     highlight: '#51A296'
   },
 });
@@ -48,6 +48,64 @@ export default class MyApp extends App {
                 min-height: 100%;
                 font-family: Helvetica, Arial, sans-serif;
               }
+              button.launch {
+              background-color: #F9A300;
+              border: none;
+              height: 40px;
+              padding: 5px 15px;
+              color: #ffffff;
+              font-size: 16px;
+              font-weight: 300;
+              margin-top: 10px;
+              margin-right: 10px;
+              }
+
+              button.launch:hover {
+              cursor: pointer;
+              background-color: #FABD44;
+              }
+
+              button.launch {
+              background-color: #F9A300;
+              border: none;
+              height: 40px;
+              padding: 5px 15px;
+              color: #ffffff;
+              font-size: 16px;
+              font-weight: 300;
+              margin-top: 10px;
+              margin-right: 10px;
+              }
+
+              button.launch:hover {
+              cursor: pointer;
+              background-color: #FABD44;
+              }
+
+              button.change {
+              background-color: #F88F00;
+              border: none;
+              height: 40px;
+              padding: 5px 15px;
+              color: #ffffff;
+              font-size: 16px;
+              font-weight: 300;
+              margin-top: 10px;
+              margin-right: 10px;
+              }
+
+              button.change:hover {
+              cursor: pointer;
+              background-color: #F89900;
+              }
+
+              button:active {
+              outline: none;
+              border: none;
+              }
+
+              button:focus {outline:0;}
+              input:focus: {background-color: transparent !important}
             `}
           />
           <Component {...pageProps} />

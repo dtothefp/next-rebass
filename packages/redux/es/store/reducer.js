@@ -31,10 +31,14 @@ export default ((state = {}, action) => {
       break;
 
     case UPDATE_ITEM_SUCCESS:
+      console.log('*******', action.item.id, state.updating.filter(({
+        id
+      }) => id !== action.item.id)); // TODO: WTD
+
       updatedState = { ...state,
         updating: state.updating.filter(({
           id
-        }) => id !== action.item.id)
+        }) => id === action.item.id)
       };
       break;
 

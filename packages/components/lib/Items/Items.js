@@ -18,19 +18,34 @@ const {
 } = deliveryStates;
 const inActiveStates = [DELIVERED, CANCELLED];
 
-const ViewButton = ({active, variant, children, handleClick}) => (
+const ViewButton = ({active, variant, children, handleClick}) => {
+  const sx = {
+    cursor: 'pointer',
+    borderRadius: '0'
+  };
+
+  if (active) {
+    Object.assign(sx, {
+      borderStyle: 'solid',
+      borderWidth: '1px',
+      borderTop: '0',
+      borderBottom: '0',
+      borderColor: 'secondary'
+    })
+  }
+
+  return (
     <Button
-      sx={{
-        borderRadius: '0 0 10px 10px',
-        cursor: 'pointer'
-      }}
+      sx={sx}
+      bg={active ? 'gray' : 'white'}
+      color="black"
       width={1/2}
-      variant={variant}
       onClick={handleClick}
     >
       {children}
     </Button>
-);
+  );
+};
 
 export default () => {
   const {
@@ -68,6 +83,8 @@ export default () => {
     update(UPDATE_ITEM)
 
     socket.emit('update', data, (err) => {
+      console.log('******done', err);
+
       if (err) {
         return update(UPDATE_ITEM_FAILED);
       }
@@ -97,29 +114,76 @@ export default () => {
     cursor: 'pointer'
   };
 
+  if (filteredItems.length < 4) {
+    for (let i = filteredItems.length; i < 4; i++) {
+      filteredItems.push({loading: true});
+    }
+  }
+
+  /* eslint-disable */
+
   return (
-    <Box width={3/4} height="100vh">
-      <Flex>
-        <ViewButton
-          variant='primary'
-          handleClick={handleClick(`active`)}
-        >Active Orders</ViewButton>
-        <ViewButton
-          variant='secondary'
-          handleClick={handleClick(`historical`)}>Historical Orders</ViewButton>
-      </Flex>
-      {filteredItems.map(({event_name, destination, name, id, sent_at_second}, i) => (
-        <Item
-          key={`${id}-${sent_at_second}`}
-          eventName={event_name}
-          name={state[id]?.name || name}
-          bg={i % 2 === 0 ? 'grey' : 'white'}
-          destination={state[id]?.destination || destination}
-          disabled={updating.includes(id)}
-          handleChange={handleChange(id)}
-          handleSubmit={handleSubmit(id)}
-        />
-      ))}
+    <Box
+        width={3/4}
+    >
+      <Box
+        pt={5}
+        sx={{
+          position: 'relative',
+          borderStyle: 'solid',
+          borderWidth: '1px',
+          borderTop: '0',
+          borderLeft: '0',
+          borderRight: '0',
+          borderColor: 'secondary'
+        }}
+      >
+        <Flex
+          sx={{
+            position: 'absolute',
+            top: '0',
+            left: '0',
+          }}
+          height="100%"
+          width="100%"
+        >
+          <ViewButton
+            active={view === 'active'}
+            handleClick={handleClick(`active`)}
+          >Active Orders</ViewButton>
+          <ViewButton
+            active={view === 'historical'}
+            handleClick={handleClick(`historical`)}>Historical Orders</ViewButton>
+        </Flex>
+      </Box>
+      <Box
+        sx={{
+          position: 'relative',
+          borderStyle: 'solid',
+          borderWidth: '3px',
+          borderTop: '0',
+          borderLeft: '0',
+          borderRight: '0',
+          borderColor: 'secondary'
+        }}
+      >
+        {filteredItems.map(({event_name, destination, name, id, sent_at_second, loading}, i) => (
+          <Item
+            key={loading ? `loading-${i}` : `${id}-${sent_at_second}`}
+            idx={i}
+            eventName={event_name}
+            name={state[id]?.name || name}
+            bg={i % 2 === 0 ? 'grey' : 'white'}
+            destination={state[id]?.destination || destination}
+            disabled={updating.includes(id)}
+            loading={loading}
+            view={view}
+            updating={updating.includes(id)}
+            handleChange={handleChange(id)}
+            handleSubmit={handleSubmit(id)}
+          />
+        ))}
+      </Box>
     </Box>
   );
 };

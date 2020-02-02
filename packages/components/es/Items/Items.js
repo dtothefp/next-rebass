@@ -22,6 +22,37 @@ const {
   CANCELLED
 } = deliveryStates;
 const inActiveStates = [DELIVERED, CANCELLED];
+
+const ViewButton = ({
+  active,
+  variant,
+  children,
+  handleClick
+}) => {
+  const sx = {
+    cursor: 'pointer',
+    borderRadius: '0'
+  };
+
+  if (active) {
+    Object.assign(sx, {
+      borderStyle: 'solid',
+      borderWidth: '1px',
+      borderTop: '0',
+      borderBottom: '0',
+      borderColor: 'secondary'
+    });
+  }
+
+  return React.createElement(Button, {
+    sx: sx,
+    bg: active ? 'gray' : 'white',
+    color: "black",
+    width: 1 / 2,
+    onClick: handleClick
+  }, children);
+};
+
 export default (() => {
   const {
     dispatch,
@@ -58,6 +89,8 @@ export default (() => {
 
     update(UPDATE_ITEM);
     socket.emit('update', data, err => {
+      console.log('******done', err);
+
       if (err) {
         return update(UPDATE_ITEM_FAILED);
       }
@@ -88,32 +121,73 @@ export default (() => {
   const sx = {
     cursor: 'pointer'
   };
+
+  if (filteredItems.length < 4) {
+    for (let i = filteredItems.length; i < 4; i++) {
+      filteredItems.push({
+        loading: true
+      });
+    }
+  }
+  /* eslint-disable */
+
+
   return React.createElement(Box, {
-    width: 3 / 4,
-    height: "100vh"
-  }, React.createElement(Flex, null, React.createElement(Button, {
-    sx: sx,
-    width: 1 / 2,
-    variant: "primary",
-    onClick: handleClick("active")
-  }, "View Active"), React.createElement(Button, {
-    sx: sx,
-    width: 1 / 2,
-    variant: "secondary",
-    onClick: handleClick("historical")
-  }, "Button")), filteredItems.map(({
+    width: 3 / 4
+  }, React.createElement(Box, {
+    pt: 5,
+    sx: {
+      position: 'relative',
+      borderStyle: 'solid',
+      borderWidth: '1px',
+      borderTop: '0',
+      borderLeft: '0',
+      borderRight: '0',
+      borderColor: 'secondary'
+    }
+  }, React.createElement(Flex, {
+    sx: {
+      position: 'absolute',
+      top: '0',
+      left: '0'
+    },
+    height: "100%",
+    width: "100%"
+  }, React.createElement(ViewButton, {
+    active: view === 'active',
+    handleClick: handleClick("active")
+  }, "Active Orders"), React.createElement(ViewButton, {
+    active: view === 'historical',
+    handleClick: handleClick("historical")
+  }, "Historical Orders"))), React.createElement(Box, {
+    sx: {
+      position: 'relative',
+      borderStyle: 'solid',
+      borderWidth: '3px',
+      borderTop: '0',
+      borderLeft: '0',
+      borderRight: '0',
+      borderColor: 'secondary'
+    }
+  }, filteredItems.map(({
     event_name,
     destination,
     name,
     id,
-    sent_at_second
-  }) => React.createElement(Item, {
-    key: "".concat(id, "-").concat(sent_at_second),
+    sent_at_second,
+    loading
+  }, i) => React.createElement(Item, {
+    key: loading ? "loading-".concat(i) : "".concat(id, "-").concat(sent_at_second),
+    idx: i,
     eventName: event_name,
     name: state[id]?.name || name,
+    bg: i % 2 === 0 ? 'grey' : 'white',
     destination: state[id]?.destination || destination,
     disabled: updating.includes(id),
+    loading: loading,
+    view: view,
+    updating: updating.includes(id),
     handleChange: handleChange(id),
     handleSubmit: handleSubmit(id)
-  })));
+  }))));
 });

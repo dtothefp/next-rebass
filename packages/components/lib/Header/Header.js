@@ -1,4 +1,4 @@
-import { Text, Box, Flex } from 'rebass';
+import { Text, Box, Flex, Image } from 'rebass';
 import icons from '@css/icons';
 import styled from '@emotion/styled';
 
@@ -19,47 +19,13 @@ const CTA = () => (
 );
 
 export default () => (
-  <>
-    <Box
-      p={3}
-      width="100%"
-    >
-      <Flex>
-        <LogoText>Cloud</LogoText>
-        <Box
-          sx={{position: 'relative'}}
-          width="40px"
-        >
-          <Box
-            sx={{
-              position: 'absolute',
-              top: '-35px',
-              left: '-4px'
-            }}
-          >
-            <HeaderLogo />
-          </Box>
-        </Box>
-        <LogoText>Kitchens</LogoText>
-      </Flex>
-    </Box>
-    <Box
+    <Flex
       bg="muted"
-      p={4}
-      pl={3}
+      p={3}
     >
-      <Text
-        color="white"
-        as="h2"
-      >
-        Smart Kitchens
-      </Text>
-      <Text
-        color="white"
-        as="p"
-      >
-        Commercial kitchens optimized for delivery
-      </Text>
-    </Box>
-  </>
+      <Image
+        width="150px"
+        src="https://1bnjwh491hvk2hz4dz3av3ku-wpengine.netdna-ssl.com/wp-content/uploads/2019/07/logo.png"
+      />
+    </Flex>
 );

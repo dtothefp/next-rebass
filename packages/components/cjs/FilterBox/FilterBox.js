@@ -20,12 +20,38 @@ const {
   removeFilterItem
 } = _redux.actions;
 
+const FilterBox = ({
+  children,
+  handleChange,
+  top,
+  bottom
+}) => _react.default.createElement(_forms.Label, {
+  sx: {
+    borderStyle: 'solid',
+    borderWidth: '1px',
+    borderLeft: '0',
+    borderRight: '0',
+    borderBottom: bottom ? false : '0',
+    borderColor: 'secondary'
+  },
+  py: 2,
+  pl: 2
+}, _react.default.createElement(_forms.Checkbox, {
+  name: "created",
+  onChange: handleChange,
+  sx: {
+    position: 'relative',
+    top: '-4px',
+    backgroundColor: 'transparent !important'
+  }
+}), children);
+
 var _default = () => {
   const {
     dispatch
   } = (0, _react.useContext)(_redux.StoreContext);
 
-  const handleInputChange = e => {
+  const handleChange = e => {
     const {
       checked,
       name
@@ -34,14 +60,37 @@ var _default = () => {
   };
 
   return _react.default.createElement(_rebass.Box, {
-    width: 1 / 4
-  }, _react.default.createElement("form", null, _react.default.createElement(_forms.Label, null, _react.default.createElement(_forms.Checkbox, {
-    name: "created",
-    onChange: handleInputChange
-  }), "Created"), _react.default.createElement(_forms.Label, null, _react.default.createElement(_forms.Checkbox, {
-    name: "cooked",
-    onChange: handleInputChange
-  }), "Cooked")));
+    sx: {
+      position: 'relative'
+    },
+    width: 1 / 4,
+    pt: 5,
+    px: 3
+  }, _react.default.createElement(_rebass.Card, {
+    sx: {
+      position: 'fixed',
+      borderStyle: 'solid',
+      borderWidth: '3px',
+      borderLeft: '0',
+      borderRight: '0',
+      borderColor: 'secondary'
+    },
+    width: "22%",
+    p: 0
+  }, _react.default.createElement(_rebass.Text, {
+    py: 3,
+    pl: 2,
+    as: "h5",
+    fontSize: 2
+  }, "Filter Orders By Status"), _react.default.createElement(_rebass.Box, {
+    as: "form"
+  }, _react.default.createElement(FilterBox, {
+    handleChange: handleChange,
+    top: true
+  }, "Created"), _react.default.createElement(FilterBox, {
+    handleChange: handleChange,
+    bottom: true
+  }, "Cooked"))));
 };
 
 exports.default = _default;
