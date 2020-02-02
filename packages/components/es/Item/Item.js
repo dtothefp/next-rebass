@@ -32,25 +32,20 @@ function _templateObject() {
 
 import React from "react";
 import { memo } from 'react';
-import { Box, Button, Flex, Text } from 'rebass';
+import PropTypes from 'prop-types';
+import { Box, Button, Flex } from 'rebass';
 import { Input } from '@rebass/forms';
 import icons from '@css/icons';
 import styled from '@emotion/styled';
 import styledC, { keyframes } from 'styled-components';
-const eventKeys = ['CREATED', 'COOKED', 'DRIVER_RECEIVED', 'DELIVERED', 'CANCELLED'];
+import { constants } from '@css/redux';
+const eventKeys = ["CREATED", "COOKED", "DRIVER_RECEIVED", "DELIVERED", "CANCELLED"];
 const iconSvgs = eventKeys.reduce((acc, key) => {
   const Icon = styled(icons[key.toLowerCase()])(_templateObject());
   return { ...acc,
     [key]: Icon
   };
 }, {});
-const iconDict = {
-  CREATED: 'Order Created',
-  COOKED: 'Cooked',
-  DRIVER_RECEIVED: 'Driver Recieved',
-  DELIVERED: 'Delivered',
-  CANCELLED: 'Canceled'
-};
 
 const EventIcon = ({
   event
@@ -58,9 +53,13 @@ const EventIcon = ({
   const Icon = iconSvgs[event];
   return React.createElement(Box, {
     sx: {
-      position: 'relative'
+      position: "relative"
     }
   }, React.createElement(Icon, null));
+};
+
+EventIcon.propTypes = {
+  event: PropTypes.string
 };
 
 const DataInput = ({
@@ -77,39 +76,53 @@ const DataInput = ({
   onChange: handleChange,
   p: 1,
   sx: {
-    borderStyle: 'none'
+    borderStyle: "none"
   },
   disabled: disabled
 }));
 
+DataInput.propTypes = {
+  disabled: PropTypes.bool,
+  handleChange: PropTypes.func,
+  name: PropTypes.string,
+  value: PropTypes.string
+}; // HACK: doesn't seem easy to do keyframes in Rebass with Emotion so must use Styled Components. This isn't optimal because
+// then we are bundling two styling libs.
+// https://github.com/rebassjs/rebass/issues/309
+// https://github.com/rebassjs/rebass/issues/309
+
 const animation = keyframes(_templateObject2());
-const bgc = '#efefefef';
-const Container = styledC(Box)(_templateObject3(), ({
+const bgc = "#efefefef";
+
+const calculateGradient = ({
   idx
-}) => idx % 2 === 0 ? "linear-gradient(-45deg, ".concat(bgc, " 35%, white, ").concat(bgc, " 65%, ").concat(bgc, ")") : 'none', animation);
-export default memo(function Item({
-  eventName,
-  name,
+}) => idx % 2 === 0 ? "linear-gradient(-45deg, ".concat(bgc, " 35%, white, ").concat(bgc, " 65%, ").concat(bgc, ")") : "none";
+
+const Container = styledC(Box)(_templateObject3(), calculateGradient, animation);
+
+const Item = ({
   destination,
-  disabled,
+  eventName,
   handleChange,
   handleSubmit,
   idx,
   loading,
+  name,
   view,
   updating
-}) {
+}) => {
   if (loading) {
     return React.createElement(Container, {
       idx: idx
     });
   }
 
-  const isHistorical = view === "historical";
+  const isHistorical = view === constants.HISTORICAL_VIEW;
+  const disabled = isHistorical || updating;
   return React.createElement(Flex, {
     as: "form",
     p: 2,
-    bg: idx % 2 === 0 ? 'gray' : false,
+    bg: idx % 2 === 0 ? "gray" : false,
     onSubmit: handleSubmit
   }, React.createElement(Box, {
     width: "10%"
@@ -119,21 +132,35 @@ export default memo(function Item({
     name: "name",
     value: name,
     handleChange: handleChange,
-    disabled: isHistorical || updating
+    disabled: disabled
   }), React.createElement(DataInput, {
     name: "destination",
     value: destination,
     handleChange: handleChange,
-    disabled: isHistorical || updating
+    disabled: disabled
   }), React.createElement(Box, {
     width: "10%"
   }, React.createElement(Button, {
+    disabled: disabled,
     sx: {
-      borderRadius: '0',
-      cursor: 'pointer',
-      display: isHistorical ? 'none' : false
+      borderRadius: "0",
+      cursor: "pointer",
+      display: isHistorical ? "none" : false
     },
     bg: "muted",
     width: "100%"
   }, "Update")));
-});
+};
+
+Item.propTypes = {
+  destination: PropTypes.string,
+  eventName: PropTypes.string,
+  handleChange: PropTypes.func,
+  handleSubmit: PropTypes.func,
+  idx: PropTypes.number,
+  loading: PropTypes.bool,
+  updating: PropTypes.bool,
+  name: PropTypes.string,
+  view: PropTypes.string
+};
+export default Item;

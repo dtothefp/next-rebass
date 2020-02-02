@@ -1,4 +1,4 @@
-import { ADD_ITEMS, REMOVE_ITEM, FILTER_ITEM, REMOVE_FILTER_ITEM, CHANGE_ITEM_VIEW } from './constants';
+import { ADD_ITEMS, FILTER_ITEM, REMOVE_FILTER_ITEM, CHANGE_ITEM_VIEW } from './constants';
 export const addItems = items => ({
   type: ADD_ITEMS,
   items

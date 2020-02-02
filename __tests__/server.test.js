@@ -9,7 +9,7 @@ const socketOnMock = jest.fn();
 const socketEmitMock = jest.fn();
 
 ioMock.mockReturnValue(() => ({
-  on: ioOnMock
+  on: ioOnMock,
 }));
 
 ioOnMock.mockImplementation((event, cb) => {
@@ -19,12 +19,12 @@ ioOnMock.mockImplementation((event, cb) => {
   });
 });
 
-describe('#Server', () => {
-  it('incrementally emits data', () => {
+describe(`#Server`, () => {
+  it(`incrementally emits data`, () => {
     expect(true).toBe(true);
   });
 
-  it('updates data', () => {
+  it(`updates data`, () => {
     expect(true).toBe(true);
   });
 });

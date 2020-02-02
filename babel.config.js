@@ -5,55 +5,55 @@ module.exports = (api) => {
 
   api.cache.forever();
 
-  if (env === 'cjs') {
+  if (env === `cjs`) {
     return {
       presets: [
-        [ '@babel/preset-env', {
-          modules: 'commonjs',
+        [ `@babel/preset-env`, {
+          modules: `commonjs`,
           targets: {
-            node: 'current'
-          }
+            node: `current`,
+          },
         }],
-        [ '@babel/preset-react', {development: false}]
+        [ `@babel/preset-react`, {development: false}],
       ],
       plugins: [
-        ['@babel/plugin-transform-runtime', {
+        [`@babel/plugin-transform-runtime`, {
           helpers: true,
           corejs: false,
           regenerator: false,
-          useESModules: false
+          useESModules: false,
         }],
-        'react-require',
-        '@babel/plugin-proposal-export-namespace-from'
-      ]
+        `react-require`,
+        `@babel/plugin-proposal-export-namespace-from`,
+      ],
     }
   }
 
-  if (env === 'es') {
+  if (env === `es`) {
     return {
       presets: [
-        [ '@babel/preset-env', {modules: false} ],
-        [ '@babel/preset-react', {development: false}]
+        [ `@babel/preset-env`, {modules: false} ],
+        [ `@babel/preset-react`, {development: false}],
       ],
       plugins: [
         [
-          '@babel/plugin-transform-runtime', {
+          `@babel/plugin-transform-runtime`, {
             helpers: true,
             corejs: false,
             regenerator: false,
-            useESModules: true
+            useESModules: true,
         }],
-        'react-require',
-        '@babel/plugin-proposal-export-namespace-from'
-      ]
+        `react-require`,
+        `@babel/plugin-proposal-export-namespace-from`,
+      ],
     }
   }
 
   return {
-    presets: ['next/babel'],
+    presets: [`next/babel`],
     plugins: [
-      'emotion',
-      '@babel/plugin-proposal-export-namespace-from'
-    ]
+      `emotion`,
+      `@babel/plugin-proposal-export-namespace-from`,
+    ],
   };
 };

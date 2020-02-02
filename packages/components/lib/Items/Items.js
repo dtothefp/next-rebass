@@ -1,56 +1,30 @@
 import io from 'socket.io-client';
 import { useState, useContext } from 'react';
 import { actions, constants, StoreContext } from '@css/redux';
-import { Box, Flex, Button } from 'rebass';
+import { Box } from 'rebass';
+import ItemsNav from '../ItemsNav/ItemsNav';
 import Item from '../Item/Item';
 
+const {HISTORICAL_VIEW} = constants;
+
 const socket = io(process.env.SERVER_URL);
-const {changeItemView, updateItem} = actions;
+const {updateItem} = actions;
 const {
   UPDATE_ITEM,
   UPDATE_ITEM_SUCCESS,
-  UPDATE_ITEM_FAILED
+  UPDATE_ITEM_FAILED,
 } = constants;
 const {deliveryStates} = constants;
 const {
   DELIVERED,
-  CANCELLED
+  CANCELLED,
 } = deliveryStates;
 const inActiveStates = [DELIVERED, CANCELLED];
 
-const ViewButton = ({active, variant, children, handleClick}) => {
-  const sx = {
-    cursor: 'pointer',
-    borderRadius: '0'
-  };
-
-  if (active) {
-    Object.assign(sx, {
-      borderStyle: 'solid',
-      borderWidth: '1px',
-      borderTop: '0',
-      borderBottom: '0',
-      borderColor: 'secondary'
-    })
-  }
-
-  return (
-    <Button
-      sx={sx}
-      bg={active ? 'gray' : 'white'}
-      color="black"
-      width={1/2}
-      onClick={handleClick}
-    >
-      {children}
-    </Button>
-  );
-};
-
-export default () => {
+const Items = () => {
   const {
     dispatch,
-    state: {items, updating, view, filter}
+    state: {items, updating, view, filter},
   } = useContext(StoreContext)
   const [state, setState] = useState({});
   const handleChange = (id) => (e) => {
@@ -59,8 +33,8 @@ export default () => {
     setState((prevState) => ({
       ...prevState,
       [id]: {
-        [name]: value
-      }
+        [name]: value,
+      },
     }));
   };
 
@@ -73,7 +47,7 @@ export default () => {
 
     const data = {
       ...stateData,
-      id
+      id,
     };
 
     const update = (type) => dispatch(
@@ -82,8 +56,7 @@ export default () => {
 
     update(UPDATE_ITEM)
 
-    socket.emit('update', data, (err) => {
-      console.log('******done', err);
+    socket.emit(`update`, data, (err) => {
 
       if (err) {
         return update(UPDATE_ITEM_FAILED);
@@ -93,15 +66,11 @@ export default () => {
     });
   };
 
-  const handleClick = (view) => () => {
-    dispatch(changeItemView(view));
-  };
-
   const filteredItems = items.filter(({event_name}) => {
     const isInactive = inActiveStates.includes(event_name);
 
     switch(view) {
-      case `historical`:
+      case HISTORICAL_VIEW:
         return isInactive;
         break;
       default:
@@ -110,61 +79,27 @@ export default () => {
     }
   });
 
-  const sx = {
-    cursor: 'pointer'
-  };
-
+  // Add some placeholder items for loading state
   if (filteredItems.length < 4) {
     for (let i = filteredItems.length; i < 4; i++) {
       filteredItems.push({loading: true});
     }
   }
 
-  /* eslint-disable */
-
   return (
     <Box
         width={3/4}
     >
-      <Box
-        pt={5}
-        sx={{
-          position: 'relative',
-          borderStyle: 'solid',
-          borderWidth: '1px',
-          borderTop: '0',
-          borderLeft: '0',
-          borderRight: '0',
-          borderColor: 'secondary'
-        }}
-      >
-        <Flex
-          sx={{
-            position: 'absolute',
-            top: '0',
-            left: '0',
-          }}
-          height="100%"
-          width="100%"
-        >
-          <ViewButton
-            active={view === 'active'}
-            handleClick={handleClick(`active`)}
-          >Active Orders</ViewButton>
-          <ViewButton
-            active={view === 'historical'}
-            handleClick={handleClick(`historical`)}>Historical Orders</ViewButton>
-        </Flex>
-      </Box>
+      <ItemsNav />
       <Box
         sx={{
-          position: 'relative',
-          borderStyle: 'solid',
-          borderWidth: '3px',
-          borderTop: '0',
-          borderLeft: '0',
-          borderRight: '0',
-          borderColor: 'secondary'
+          position: `relative`,
+          borderStyle: `solid`,
+          borderWidth: `3px`,
+          borderTop: `0`,
+          borderLeft: `0`,
+          borderRight: `0`,
+          borderColor: `secondary`,
         }}
       >
         {filteredItems.map(({event_name, destination, name, id, sent_at_second, loading}, i) => (
@@ -173,9 +108,8 @@ export default () => {
             idx={i}
             eventName={event_name}
             name={state[id]?.name || name}
-            bg={i % 2 === 0 ? 'grey' : 'white'}
+            bg={i % 2 === 0 ? `grey` : `white`}
             destination={state[id]?.destination || destination}
-            disabled={updating.includes(id)}
             loading={loading}
             view={view}
             updating={updating.includes(id)}
@@ -187,3 +121,5 @@ export default () => {
     </Box>
   );
 };
+
+export default Items;

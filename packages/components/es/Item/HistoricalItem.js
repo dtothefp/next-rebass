@@ -1,7 +1,7 @@
 import _taggedTemplateLiteral from "@babel/runtime/helpers/esm/taggedTemplateLiteral";
 
 function _templateObject2() {
-  const data = _taggedTemplateLiteral(["\n  margin: 0;\n  ", "\n"]);
+  const data = _taggedTemplateLiteral([`\n  margin: 0;\n  `, `\n`,]);
 
   _templateObject2 = function () {
     return data;
@@ -11,7 +11,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  const data = _taggedTemplateLiteral(["\n  display: flex;\n  ", "\n"]);
+  const data = _taggedTemplateLiteral([`\n  display: flex;\n  `, `\n`,]);
 
   _templateObject = function () {
     return data;
@@ -29,7 +29,7 @@ const Item = styled.p(_templateObject2(), spacing);
 export default memo(function Item({
   eventName,
   name,
-  destination
+  destination,
 }) {
-  return React.createElement(FlexContainer, null, React.createElement("div", null, React.createElement(Item, null, eventName)), React.createElement("div", null, React.createElement(Item, null, name)), React.createElement("div", null, React.createElement(Item, null, destination)));
+  return React.createElement(FlexContainer, null, React.createElement(`div`, null, React.createElement(Item, null, eventName)), React.createElement(`div`, null, React.createElement(Item, null, name)), React.createElement(`div`, null, React.createElement(Item, null, destination)));
 });

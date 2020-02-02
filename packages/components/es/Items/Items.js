@@ -2,11 +2,14 @@ import React from "react";
 import io from 'socket.io-client';
 import { useState, useContext } from 'react';
 import { actions, constants, StoreContext } from '@css/redux';
-import { Box, Flex, Button } from 'rebass';
+import { Box } from 'rebass';
+import ItemsNav from '../ItemsNav/ItemsNav';
 import Item from '../Item/Item';
+const {
+  HISTORICAL_VIEW
+} = constants;
 const socket = io(process.env.SERVER_URL);
 const {
-  changeItemView,
   updateItem
 } = actions;
 const {
@@ -23,37 +26,7 @@ const {
 } = deliveryStates;
 const inActiveStates = [DELIVERED, CANCELLED];
 
-const ViewButton = ({
-  active,
-  variant,
-  children,
-  handleClick
-}) => {
-  const sx = {
-    cursor: 'pointer',
-    borderRadius: '0'
-  };
-
-  if (active) {
-    Object.assign(sx, {
-      borderStyle: 'solid',
-      borderWidth: '1px',
-      borderTop: '0',
-      borderBottom: '0',
-      borderColor: 'secondary'
-    });
-  }
-
-  return React.createElement(Button, {
-    sx: sx,
-    bg: active ? 'gray' : 'white',
-    color: "black",
-    width: 1 / 2,
-    onClick: handleClick
-  }, children);
-};
-
-export default (() => {
+const Items = () => {
   const {
     dispatch,
     state: {
@@ -88,9 +61,7 @@ export default (() => {
     const update = type => dispatch(updateItem(data, type));
 
     update(UPDATE_ITEM);
-    socket.emit('update', data, err => {
-      console.log('******done', err);
-
+    socket.emit("update", data, err => {
       if (err) {
         return update(UPDATE_ITEM_FAILED);
       }
@@ -99,17 +70,13 @@ export default (() => {
     });
   };
 
-  const handleClick = view => () => {
-    dispatch(changeItemView(view));
-  };
-
   const filteredItems = items.filter(({
     event_name
   }) => {
     const isInactive = inActiveStates.includes(event_name);
 
     switch (view) {
-      case "historical":
+      case HISTORICAL_VIEW:
         return isInactive;
         break;
 
@@ -117,10 +84,7 @@ export default (() => {
         return filter.length ? filter.includes(event_name) : !isInactive;
         break;
     }
-  });
-  const sx = {
-    cursor: 'pointer'
-  };
+  }); // Add some placeholder items for loading state
 
   if (filteredItems.length < 4) {
     for (let i = filteredItems.length; i < 4; i++) {
@@ -129,45 +93,18 @@ export default (() => {
       });
     }
   }
-  /* eslint-disable */
-
 
   return React.createElement(Box, {
     width: 3 / 4
-  }, React.createElement(Box, {
-    pt: 5,
+  }, React.createElement(ItemsNav, null), React.createElement(Box, {
     sx: {
-      position: 'relative',
-      borderStyle: 'solid',
-      borderWidth: '1px',
-      borderTop: '0',
-      borderLeft: '0',
-      borderRight: '0',
-      borderColor: 'secondary'
-    }
-  }, React.createElement(Flex, {
-    sx: {
-      position: 'absolute',
-      top: '0',
-      left: '0'
-    },
-    height: "100%",
-    width: "100%"
-  }, React.createElement(ViewButton, {
-    active: view === 'active',
-    handleClick: handleClick("active")
-  }, "Active Orders"), React.createElement(ViewButton, {
-    active: view === 'historical',
-    handleClick: handleClick("historical")
-  }, "Historical Orders"))), React.createElement(Box, {
-    sx: {
-      position: 'relative',
-      borderStyle: 'solid',
-      borderWidth: '3px',
-      borderTop: '0',
-      borderLeft: '0',
-      borderRight: '0',
-      borderColor: 'secondary'
+      position: "relative",
+      borderStyle: "solid",
+      borderWidth: "3px",
+      borderTop: "0",
+      borderLeft: "0",
+      borderRight: "0",
+      borderColor: "secondary"
     }
   }, filteredItems.map(({
     event_name,
@@ -181,13 +118,14 @@ export default (() => {
     idx: i,
     eventName: event_name,
     name: state[id]?.name || name,
-    bg: i % 2 === 0 ? 'grey' : 'white',
+    bg: i % 2 === 0 ? "grey" : "white",
     destination: state[id]?.destination || destination,
-    disabled: updating.includes(id),
     loading: loading,
     view: view,
     updating: updating.includes(id),
     handleChange: handleChange(id),
     handleSubmit: handleSubmit(id)
   }))));
-});
+};
+
+export default Items;

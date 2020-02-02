@@ -1,22 +1,22 @@
-const app = require('express')();
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
-const next = require('next');
-const path = require('path');
-const { promisify } = require('util');
-const { readJson, outputJson } = require('fs-extra');
+const app = require(`express`)();
+const server = require(`http`).Server(app);
+const io = require(`socket.io`)(server);
+const next = require(`next`);
+const path = require(`path`);
+const { promisify } = require(`util`);
+const { readJson, outputJson } = require(`fs-extra`);
 
-const dev = process.env.NODE_ENV !== 'production';
+const dev = process.env.NODE_ENV !== `production`;
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 const port = 3000;
 const listen = promisify(server.listen.bind(server));
-const jsonFp = path.join(__dirname, 'challenge_data.json');
+const jsonFp = path.join(__dirname, `challenge_data.json`);
 
-io.on('connect', async (socket) => {
+io.on(`connect`, async (socket) => {
   let i = 0;
 
-  socket.on('update', async (newItem, cb) => {
+  socket.on(`update`, async (newItem, cb) => {
     try {
       const data = await readJson(jsonFp);
       const idx = data.findIndex(({id}) => id === newItem.id);
@@ -24,7 +24,7 @@ io.on('connect', async (socket) => {
       const newData = [
         ...data.slice(0, idx),
         {...item, ...newItem},
-        ...data.slice(idx + 1)
+        ...data.slice(idx + 1),
       ];
 
       await outputJson(path.join(jsonFp), newData, {spaces: 2});
@@ -35,12 +35,12 @@ io.on('connect', async (socket) => {
     }
   });
 
-  const id = setInterval(async () => {
+  setInterval(async () => {
     // potentially cache
     const data = await readJson(jsonFp);
     const items = data.filter(({sent_at_second: s}) => s <= i);
 
-    socket.emit('data', {items});
+    socket.emit(`data`, {items});
 
     i += 1;
 
@@ -49,7 +49,7 @@ io.on('connect', async (socket) => {
 });
 
 nextApp.prepare().then(async () => {
-  app.get('*', nextHandler);
+  app.get(`*`, nextHandler);
 
   await listen(port);
 

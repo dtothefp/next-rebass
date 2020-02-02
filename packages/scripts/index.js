@@ -1,1 +1,1 @@
-exports.alias = require('./alias-dev-packages');
+exports.alias = require(`./alias-dev-packages`);

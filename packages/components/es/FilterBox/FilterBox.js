@@ -1,5 +1,6 @@
 import React from "react";
 import { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { Box, Card, Text } from 'rebass';
 import { Checkbox, Label } from '@rebass/forms';
 import { actions, StoreContext } from '@css/redux';
@@ -8,33 +9,40 @@ const {
   removeFilterItem
 } = actions;
 
-const FilterBox = ({
+const FilterInput = ({
+  bottom,
   children,
   handleChange,
-  top,
-  bottom
+  name
 }) => React.createElement(Label, {
   sx: {
-    borderStyle: 'solid',
-    borderWidth: '1px',
-    borderLeft: '0',
-    borderRight: '0',
-    borderBottom: bottom ? false : '0',
-    borderColor: 'secondary'
+    borderStyle: "solid",
+    borderWidth: "1px",
+    borderLeft: "0",
+    borderRight: "0",
+    borderBottom: bottom ? false : "0",
+    borderColor: "secondary"
   },
   py: 2,
   pl: 2
 }, React.createElement(Checkbox, {
-  name: "created",
+  name: name,
   onChange: handleChange,
   sx: {
-    position: 'relative',
-    top: '-4px',
-    backgroundColor: 'transparent !important'
+    position: "relative",
+    top: "-4px",
+    backgroundColor: "transparent !important"
   }
 }), children);
 
-export default (() => {
+FilterInput.propTypes = {
+  bottom: PropTypes.bool,
+  children: PropTypes.node,
+  handleChange: PropTypes.func,
+  name: PropTypes.string
+};
+
+const FilterBox = () => {
   const {
     dispatch
   } = useContext(StoreContext);
@@ -49,19 +57,19 @@ export default (() => {
 
   return React.createElement(Box, {
     sx: {
-      position: 'relative'
+      position: "relative"
     },
     width: 1 / 4,
     pt: 5,
     px: 3
   }, React.createElement(Card, {
     sx: {
-      position: 'fixed',
-      borderStyle: 'solid',
-      borderWidth: '3px',
-      borderLeft: '0',
-      borderRight: '0',
-      borderColor: 'secondary'
+      position: "fixed",
+      borderStyle: "solid",
+      borderWidth: "3px",
+      borderLeft: "0",
+      borderRight: "0",
+      borderColor: "secondary"
     },
     width: "22%",
     p: 0
@@ -72,11 +80,14 @@ export default (() => {
     fontSize: 2
   }, "Filter Orders By Status"), React.createElement(Box, {
     as: "form"
-  }, React.createElement(FilterBox, {
-    handleChange: handleChange,
-    top: true
-  }, "Created"), React.createElement(FilterBox, {
+  }, React.createElement(FilterInput, {
+    name: "created",
+    handleChange: handleChange
+  }, "Created"), React.createElement(FilterInput, {
+    name: "cooked",
     handleChange: handleChange,
     bottom: true
   }, "Cooked"))));
-});
+};
+
+export default FilterBox;

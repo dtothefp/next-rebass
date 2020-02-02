@@ -1,16 +1,18 @@
 import { memo } from 'react';
-import { Box, Button, Flex, Text } from 'rebass';
+import PropTypes from 'prop-types';
+import { Box, Button, Flex } from 'rebass';
 import { Input } from '@rebass/forms';
 import icons from '@css/icons';
 import styled from '@emotion/styled';
 import styledC, { keyframes } from 'styled-components';
+import { constants } from '@css/redux';
 
 const eventKeys = [
-  'CREATED',
-  'COOKED',
-  'DRIVER_RECEIVED',
-  'DELIVERED',
-  'CANCELLED'
+  `CREATED`,
+  `COOKED`,
+  `DRIVER_RECEIVED`,
+  `DELIVERED`,
+  `CANCELLED`,
 ];
 
 const iconSvgs = eventKeys.reduce((acc, key) => {
@@ -24,32 +26,34 @@ const iconSvgs = eventKeys.reduce((acc, key) => {
 
   return {
     ...acc,
-    [key]: Icon
+    [key]: Icon,
   };
 }, {})
-
-const iconDict = {
-  CREATED: 'Order Created',
-  COOKED: 'Cooked',
-  DRIVER_RECEIVED: 'Driver Recieved',
-  DELIVERED: 'Delivered',
-  CANCELLED: 'Canceled'
-};
 
 const EventIcon = ({event}) => {
   const Icon = iconSvgs[event];
 
   return (
     <Box
-      sx={{position: 'relative'}}
+      sx={{position: `relative`}}
       >
       <Icon />
     </Box>
   );
 };
 
-const DataInput = ({disabled, handleChange, name, value}) => (
-  <Box width="40%">
+EventIcon.propTypes = {
+  event: PropTypes.string
+};
+
+const DataInput = ({
+  disabled,
+  handleChange,
+  historical,
+  name,
+  value
+}) => (
+  <Box width={historical && name === 'destination' ? '50%' : '40%'}>
     <Input
       type="text"
       name={name}
@@ -57,53 +61,67 @@ const DataInput = ({disabled, handleChange, name, value}) => (
       onChange={handleChange}
       p={1}
       sx={{
-        borderStyle: 'none',
+        borderStyle: `none`,
       }}
       disabled={disabled}
     />
   </Box>
 );
 
+
+DataInput.propTypes = {
+  disabled: PropTypes.bool,
+  handleChange: PropTypes.func,
+  historical: PropTypes.bool,
+  name: PropTypes.string,
+  value: PropTypes.string
+};
+
+// HACK: doesn't seem easy to do keyframes in Rebass with Emotion so must use Styled Components. This isn't optimal because
+// then we are bundling two styling libs.
+// https://github.com/rebassjs/rebass/issues/309
+// https://github.com/rebassjs/rebass/issues/309
 const animation = keyframes`
   0% { background-position-x: 100% }
   100% { background-position-x: 0% }
 `;
 
-const bgc = '#efefefef';
+const bgc = `#efefefef`;
+const calculateGradient = ({idx}) => idx % 2 === 0 ? `linear-gradient(-45deg, ${bgc} 35%, white, ${bgc} 65%, ${bgc})` : `none`;
 
 const Container = styledC(Box)`
   display: flex;
   height: 50px;
   padding: 10px;
-  background-image: ${({idx}) => idx % 2 === 0 ? `linear-gradient(-45deg, ${bgc} 35%, white, ${bgc} 65%, ${bgc})` : 'none'};
+  background-image: ${calculateGradient};
   background-position-y: 50%;
   background-size: 300%;
   animation: 1.5s ${animation} infinite;
 `;
 
-export default memo(function Item({
-  eventName,
-  name,
+const Item = memo(({
   destination,
-  disabled,
+  eventName,
   handleChange,
   handleSubmit,
   idx,
   loading,
+  name,
   view,
   updating,
-}) {
+}) => {
   if (loading) {
     return <Container idx={idx} />;
   }
 
-  const isHistorical = view === `historical`
+  const isHistorical = view === constants.HISTORICAL_VIEW;
+  const disabled = isHistorical || updating
 
   return (
     <Flex
       as="form"
       p={2}
-      bg={idx % 2 === 0 ? 'gray' : false}
+      bg={idx % 2 === 0 ? `gray` : false}
       onSubmit={handleSubmit}
     >
       <Box width="10%">
@@ -113,24 +131,42 @@ export default memo(function Item({
         name="name"
         value={name}
         handleChange={handleChange}
-        disabled={isHistorical || updating}
+        disabled={disabled}
+        historical={isHistorical}
       />
       <DataInput
         name="destination"
         value={destination}
         handleChange={handleChange}
-        disabled={isHistorical || updating}
+        disabled={disabled}
+        historical={isHistorical}
       />
-      <Box width="10%">
-        <Button
-          sx={{
-            borderRadius: '0',
-            cursor: 'pointer',
-            display: isHistorical ? 'none' : false
-          }}
-          bg="muted"
-          width="100%">Update</Button>
-      </Box>
+      {isHistorical ? null :
+        <Box width="10%">
+          <Button
+            disabled={disabled}
+            sx={{
+              borderRadius: `0`,
+              cursor: `pointer`,
+            }}
+            bg="muted"
+            width="100%">Update</Button>
+        </Box>
+      }
     </Flex>
   );
 });
+
+Item.propTypes = {
+  destination: PropTypes.string,
+  eventName: PropTypes.string,
+  handleChange: PropTypes.func,
+  handleSubmit: PropTypes.func,
+  idx: PropTypes.number,
+  loading: PropTypes.bool,
+  updating: PropTypes.bool,
+  name: PropTypes.string,
+  view: PropTypes.string,
+};
+
+export default Item;

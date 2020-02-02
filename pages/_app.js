@@ -11,13 +11,13 @@ const cache = createCache();
 
 Object.assign(theme, {
   colors: {
-    text: '#000',
-    background: '#fff',
-    primary: '#7395AE',
-    secondary: '#557A95',
-    muted: '#379683',
-    gray: '#efefef',
-    highlight: '#51A296'
+    text: `#000`,
+    background: `#fff`,
+    primary: `#7395AE`,
+    secondary: `#557A95`,
+    muted: `#379683`,
+    gray: `#efefef`,
+    highlight: `#51A296`,
   },
 });
 

@@ -39,7 +39,7 @@ var _default = (state = {}, action) => {
       break;
 
     case _constants.UPDATE_ITEM_SUCCESS:
-      console.log('*******', action.item.id, state.updating.filter(({
+      console.log(`*******`, action.item.id, state.updating.filter(({
         id
       }) => id !== action.item.id)); // TODO: WTD
 
@@ -65,8 +65,8 @@ var _default = (state = {}, action) => {
       break;
   }
 
-  if (process.env.NODE_ENV === 'development') {
-    console.log('***UPDATED_STATE***', updatedState);
+  if (process.env.NODE_ENV === `development`) {
+    console.log(`***UPDATED_STATE***`, updatedState);
   }
 
   return updatedState;

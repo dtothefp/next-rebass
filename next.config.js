@@ -3,7 +3,7 @@ const transpileModules = require(`next-transpile-modules`);
 const withESLint = require(`next-eslint`);
 const withCustomBabelConfigFile = require(`next-plugin-custom-babel-config`);
 const withPlugins = require(`next-compose-plugins`);
-const { alias } = require('@css/scripts');
+const { alias } = require(`@css/scripts`);
 
 const withTM = transpileModules([`@css`, path.join(__dirname, `packages`)]);
 const {ASSET_PREFIX: assetPrefix = ``} = process.env;
@@ -12,7 +12,7 @@ module.exports = withPlugins([withTM, withESLint, withCustomBabelConfigFile], {
   babelConfigFile: path.join(__dirname, `babel.config.js`),
   assetPrefix,
   env: {
-    SERVER_URL: process.env.SERVER_URL || 'http://localhost:3000',
+    SERVER_URL: process.env.SERVER_URL || `http://localhost:3000`,
   },
   eslintLoaderOptions: {
     // failOnWarning: true,
@@ -33,9 +33,9 @@ module.exports = withPlugins([withTM, withESLint, withCustomBabelConfigFile], {
       {
         test: /\.svg$/,
         use: `svg-react-loader`,
-      },
+      }
     );
 
     return config;
-  }
+  },
 });

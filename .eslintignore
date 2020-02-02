@@ -2,4 +2,7 @@
 /.next/
 /out/
 /packages/*/dist/
+/packages/*/cjs/
+/packages/*/es/
 /packages/*/node_modules/
+theme.js
