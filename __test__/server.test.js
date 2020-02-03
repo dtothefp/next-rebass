@@ -4,7 +4,7 @@ import { readJson, outputJson } from 'fs-extra';
 import next from 'next';
 import http from 'http';
 
-jest.mock('http');
+jest.mock(`http`);
 
 const ioMock = jest.fn();
 const ioOnMock = jest.fn();
@@ -47,9 +47,9 @@ ioOnMock.mockImplementation((event, cb) => {
     emit: socketEmitMock,
   });
 });
-const itemAName = 'name';
-const itemAId = 'A';
-const itemBId = 'A';
+const itemAName = `name`;
+const itemAId = `A`;
+const itemBId = `A`;
 
 const newItem = {
   id: itemAId,
@@ -75,7 +75,7 @@ readJson.mockReturnValue(items);
 outputJson.mockReturnValue(Promise.resolve());
 
 describe(`#Server`, () => {
-  const server = require('../server');
+  require(`../server`);
 
   it(`incrementally emits data`, async () => {
     await new Promise((res) => setTimeout(res, 2000));
@@ -83,7 +83,7 @@ describe(`#Server`, () => {
     expect(socketEmitMock.mock.calls[1][1]).toEqual({items: [items[0]]});
   });
 
-  it.skip('updates data', () => {
-    expect(outputJson.mock.calls[0][1]).toEqual([newItemA, ...items.slice(-1)]);
+  it.skip(`updates data`, () => {
+    expect(outputJson.mock.calls[0][1]).toEqual([newItem, ...items.slice(-1)]);
   });
 });

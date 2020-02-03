@@ -5,7 +5,7 @@ module.exports = (api) => {
 
   api.cache.forever();
 
-  if (env === 'node') {
+  if (env === `node`) {
     return {
       presets: [
         [ `@babel/preset-env`, {
