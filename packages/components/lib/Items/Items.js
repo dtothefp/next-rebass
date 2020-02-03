@@ -17,6 +17,7 @@ const {
 } = constants;
 const {deliveryStates} = constants;
 const {
+  COOKED,
   DELIVERED,
   CANCELLED,
 } = deliveryStates;
@@ -25,7 +26,7 @@ const inActiveStates = [DELIVERED, CANCELLED];
 const Items = () => {
   const {
     dispatch,
-    state: {items, updating, view, filter},
+    state: {items, updating, view, filter, time},
   } = useContext(StoreContext)
   const [state, setState] = useState({});
   const handleChange = (id) => (e) => {
@@ -72,16 +73,26 @@ const Items = () => {
     });
   };
 
-  const filteredItems = items.filter(({event_name}) => {
+  const currTime = new Date();
+  const filteredItems = items.filter(({event_name, timestamp}) => {
     const isInactive = inActiveStates.includes(event_name);
 
-    switch(view) {
-      case HISTORICAL_VIEW:
-        return isInactive;
-        break;
-      default:
-        return filter.length ? filter.includes(event_name) : !isInactive;
-        break;
+    if (view === HISTORICAL_VIEW) {
+      return isInactive;
+    }
+
+    if (isInactive) return false;
+
+    const shouldCalculateCookedDuration =
+      event_name === COOKED && filter.includes(COOKED) &&
+      !isNaN(time) && time > 0;
+
+    if (shouldCalculateCookedDuration) {
+      console.log(`*****CALCULATING`, currTime - timestamp <= (time * 1000));
+
+      return currTime - timestamp <= (time * 1000);
+    } else {
+      return filter.length ? filter.includes(event_name) : true;
     }
   });
 

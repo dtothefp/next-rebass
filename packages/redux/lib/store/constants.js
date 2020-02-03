@@ -7,6 +7,7 @@ export const UPDATE_ITEM_FAILED = `UPDATE_ITEM_FAILED`;
 export const CHANGE_ITEM_VIEW = `CHANGE_ITEM_VIEW`;
 export const ACTIVE_VIEW = `ACTIVE_VIEW`;
 export const HISTORICAL_VIEW = `HISTORICAL_VIEW`;
+export const ADD_TIME_FILTER = `ADD_TIME_FILTER`;
 
 export const deliveryStates = {
   CREATED: `CREATED`,

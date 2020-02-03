@@ -5,41 +5,64 @@ import {
   UPDATE_ITEM,
   UPDATE_ITEM_SUCCESS,
   UPDATE_ITEM_FAILED,
-  CHANGE_ITEM_VIEW
+  CHANGE_ITEM_VIEW,
+  ADD_TIME_FILTER,
+  deliveryStates
 } from './constants';
 
+const {COOKED} = deliveryStates;
+
 export default (state = {}, action) => {
-  let items, itemsDict, updatedState, updatedFilter, order;
+  let
+    items,
+    itemsDict,
+    newItemsDict,
+    updatedState,
+    updatedFilter,
+    order,
+    sorted,
+    timestamp;
 
   switch (action.type) {
     case ADD_ITEMS:
+      timestamp = Date.now();
       order = state.order || [];
-      itemsDict = [...action.items]
-        .sort((a, b) => a.sent_at_second - b.sent_at_second)
-        .reduce((acc, item) => {
-          const {id} = item;
+      sorted = [...action.items].sort((a, b) => a.sent_at_second - b.sent_at_second);
+      ({itemsDict = {}} = state);
 
-          if (!acc[id]) {
-            acc[id] = [];
+      newItemsDict = sorted.reduce((acc, item) => {
+        const {id, event_name} = item;
+        const itemList = itemsDict[id] || [];
+        const events = itemList.map(({event_name}) => event_name);
+
+        if (!events.includes(event_name)) {
+          if (event_name === COOKED) {
+            Object.assign(item, {timestamp});
           }
 
           if (!order.includes(id)) {
             order.push(id);
           }
 
-          acc[id].push(item);
+          itemList.push(item);
+        }
 
-          return acc;
-        }, {});
+        return {
+          ...acc,
+          [id]: itemList,
+
+        };
+      }, {});
 
       items = order.reduce((list, id) => ([
         ...list,
-        itemsDict[id].sort((a, b) => b.sent_at_second - a.sent_at_second)[0]
+        newItemsDict[id].sort((a, b) => b.sent_at_second - a.sent_at_second)[0]
       ]), []);
 
       updatedState = {
         ...state,
         items,
+        itemsDict: newItemsDict,
         order,
       };
       break;
@@ -84,6 +107,12 @@ export default (state = {}, action) => {
         view: action.view,
       };
       break;
+      case ADD_TIME_FILTER:
+        updatedState = {
+          ...state,
+          time: Number(action.interval),
+        };
+        break;
   }
 
   if (process.env.NODE_ENV === `development`) {

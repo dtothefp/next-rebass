@@ -18,8 +18,8 @@ const {CREATED} = deliveryStates
 
 describe(`#reducer`, () => {
   it(`adds and sorts items and keeps track of original order by ID`, () => {
-    const idA = 'A';
-    const idB = 'B';
+    const idA = `A`;
+    const idB = `B`;
     const itemA = {sent_at_second: 2, id: idA};
     const itemB = {sent_at_second: 3, id: idB};
     const newItems = [
@@ -33,7 +33,7 @@ describe(`#reducer`, () => {
       order: [idA, idB]
     });
 
-    const idC = 'C';
+    const idC = `C`;
     const itemC = {sent_at_second: 5, id: idC};
     const updatedItemA = {...itemA, sent_at_second: 10};
 

@@ -2,7 +2,8 @@ import {
   ADD_ITEMS,
   FILTER_ITEM,
   REMOVE_FILTER_ITEM,
-  CHANGE_ITEM_VIEW
+  CHANGE_ITEM_VIEW,
+  ADD_TIME_FILTER
 } from './constants';
 
 export const addItems = (items) => ({
@@ -30,3 +31,7 @@ export const changeItemView = (view) => ({
   view,
 });
 
+export const addTimeFilter = (interval) => ({
+  type: ADD_TIME_FILTER,
+  interval,
+});

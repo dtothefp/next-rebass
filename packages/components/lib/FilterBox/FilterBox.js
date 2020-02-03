@@ -1,63 +1,42 @@
 import { useContext } from 'react';
-import PropTypes from 'prop-types';
 import { Box, Card, Text } from 'rebass';
-import { Checkbox, Label } from '@rebass/forms';
+import { Checkbox, Input, Label } from '@rebass/forms';
 import {
   actions,
+  constants,
   StoreContext
 } from '@css/redux';
 
 const {
   filterItem,
   removeFilterItem,
+  addTimeFilter,
 } = actions;
 
-const FilterInput = ({
-  bottom,
-  children,
-  handleChange,
-  name,
-}) => (
-    <Label
-      sx={{
-        borderStyle: `solid`,
-        borderWidth: `1px`,
-        borderLeft: `0`,
-        borderRight: `0`,
-        borderBottom: bottom ? false : `0`,
-        borderColor: `secondary`,
-      }}
-      py={2}
-      pl={2}
-    >
-      <Checkbox
-        name={name}
-        onChange={handleChange}
-        sx={{
-          position: `relative`,
-          top: `-4px`,
-          backgroundColor: `transparent !important`,
-        }}/>
-      {children}
-    </Label>
-);
-
-FilterInput.propTypes = {
-  bottom: PropTypes.bool,
-  children: PropTypes.node,
-  handleChange: PropTypes.func,
-  name: PropTypes.string,
-};
+const {deliveryStates: {COOKED}} = constants;
 
 const FilterBox = () => {
-  const {dispatch} = useContext(StoreContext);
-  const handleChange = ((e) => {
+  const {
+    dispatch,
+    state: {
+      filter,
+      time = ``,
+    }
+  } = useContext(StoreContext);
+  const handleChange = (e) => {
     const {checked, name} = e.target;
 
     dispatch(
       checked ? filterItem(name) : removeFilterItem(name)
     );
-  });
+  };
+  const handleInputChange = (e) => {
+    const {value} = e.target;
+
+    if (isNaN(value)) return null;
+
+    dispatch(addTimeFilter(value));
+  };
 
   return (
     <Box
@@ -89,15 +68,65 @@ const FilterBox = () => {
         <Box
           as="form"
         >
-          <FilterInput
-            name="created"
-            handleChange={handleChange}
-          >Created</FilterInput>
-          <FilterInput
-            name="cooked"
-            handleChange={handleChange}
-            bottom
-          >Cooked</FilterInput>
+          <Label
+            sx={{
+              borderStyle: `solid`,
+              borderWidth: `1px`,
+              borderLeft: `0`,
+              borderRight: `0`,
+              borderColor: `secondary`,
+            }}
+            py={2}
+            pl={2}
+          >
+            <Checkbox
+              name="created"
+              onChange={handleChange}
+              sx={{
+                position: `relative`,
+                top: `-4px`,
+                backgroundColor: `transparent !important`,
+              }}/>
+            Created
+          </Label>
+          <Box>
+          <Label
+            py={2}
+            pl={2}
+          >
+            <Checkbox
+              name="cooked"
+              onChange={handleChange}
+              sx={{
+                position: `relative`,
+                top: `-4px`,
+                backgroundColor: `transparent !important`,
+              }}
+            />Cooked</Label>
+            <Label
+              py={2}
+              pl={2}
+              sx={{
+                borderStyle: `solid`,
+                borderWidth: `1px`,
+                borderLeft: `0`,
+                borderRight: `0`,
+                borderBottom: `0`,
+                borderColor: `secondary`,
+                display: filter.includes(COOKED) ? false : `none !important`
+              }}
+            >
+              <Input
+                placeholder="elapsed time in seconds"
+                type="number"
+                name="cooked"
+                height="25px"
+                min="1"
+                onChange={handleInputChange}
+                value={time}
+              />
+            </Label>
+          </Box>
         </Box>
       </Card>
     </Box>
