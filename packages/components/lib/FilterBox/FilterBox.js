@@ -4,7 +4,6 @@ import { Box, Card, Text } from 'rebass';
 import { Checkbox, Label } from '@rebass/forms';
 import {
   actions,
-  constants,
   StoreContext
 } from '@css/redux';
 
@@ -13,12 +12,9 @@ const {
   removeFilterItem,
 } = actions;
 
-const {HISTORICAL_VIEW} = constants;
-
 const FilterInput = ({
   bottom,
   children,
-  disabled,
   handleChange,
   name,
 }) => (
@@ -37,7 +33,6 @@ const FilterInput = ({
       <Checkbox
         name={name}
         onChange={handleChange}
-        disabled={disabled}
         sx={{
           position: `relative`,
           top: `-4px`,
@@ -50,16 +45,12 @@ const FilterInput = ({
 FilterInput.propTypes = {
   bottom: PropTypes.bool,
   children: PropTypes.node,
-  disabled: PropTypes.bool,
   handleChange: PropTypes.func,
   name: PropTypes.string,
 };
 
 const FilterBox = () => {
-  const {
-    state: {view},
-    dispatch
-  } = useContext(StoreContext);
+  const {dispatch} = useContext(StoreContext);
   const handleChange = ((e) => {
     const {checked, name} = e.target;
 
@@ -67,7 +58,6 @@ const FilterBox = () => {
       checked ? filterItem(name) : removeFilterItem(name)
     );
   });
-  const disabled = view === HISTORICAL_VIEW;
 
   return (
     <Box
@@ -102,12 +92,10 @@ const FilterBox = () => {
           <FilterInput
             name="created"
             handleChange={handleChange}
-            disabled={disabled}
           >Created</FilterInput>
           <FilterInput
             name="cooked"
             handleChange={handleChange}
-            disabled={disabled}
             bottom
           >Cooked</FilterInput>
         </Box>

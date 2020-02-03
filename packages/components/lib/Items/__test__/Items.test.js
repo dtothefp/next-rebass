@@ -45,10 +45,10 @@ describe(`#Items`, () => {
     expect(wrapper.children().length).toBe(4);
   });
 
-  it('allows updating active items', () => {
-    const name = 'name';
-    const destination = 'destination';
-    const id = 'ID';
+  it(`allows updating active items`, () => {
+    const name = `name`;
+    const destination = `destination`;
+    const id = `ID`;
     const items = [{
       event_name: CREATED,
       destination,
@@ -67,17 +67,17 @@ describe(`#Items`, () => {
     const destInput = wrapper.find(`input[name="${destination}"]`);
     const form = wrapper.find(`form`);
 
-    nameInput.getDOMNode().value = 'update-name';
-    nameInput.simulate('change');
+    nameInput.getDOMNode().value = `update-name`;
+    nameInput.simulate(`change`);
 
-    destInput.getDOMNode().value = 'update-dest';
-    destInput.simulate('change');
+    destInput.getDOMNode().value = `update-dest`;
+    destInput.simulate(`change`);
 
-    form.simulate('submit');
+    form.simulate(`submit`);
 
     const itemData = {
-      name: 'update-name',
-      destination: 'update-dest',
+      name: `update-name`,
+      destination: `update-dest`,
       id
     };
 
@@ -89,10 +89,10 @@ describe(`#Items`, () => {
     expect(socketMock.mock.calls[0][1]).toEqual(itemData);
   });
 
-  it('disables updating historical items', () => {
-    const name = 'name';
-    const destination = 'destination';
-    const id = 'ID';
+  it(`disables updating historical items`, () => {
+    const name = `name`;
+    const destination = `destination`;
+    const id = `ID`;
     const view = HISTORICAL_VIEW;
     const items = [{
       event_name: DELIVERED,

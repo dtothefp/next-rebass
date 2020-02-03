@@ -8,13 +8,31 @@ exports.default = void 0;
 var _constants = require("./constants");
 
 var _default = (state = {}, action) => {
-  let items, updatedState, updatedFilter;
+  let items, itemsDict, updatedState, updatedFilter, order;
 
   switch (action.type) {
     case _constants.ADD_ITEMS:
-      items = [...action.items].sort((a, b) => a.sent_at_second - b.sent_at_second);
+      order = state.order || [];
+      itemsDict = [...action.items].sort((a, b) => a.sent_at_second - b.sent_at_second).reduce((acc, item) => {
+        const {
+          id
+        } = item;
+
+        if (!acc[id]) {
+          acc[id] = [];
+        }
+
+        if (!order.includes(id)) {
+          order.push(id);
+        }
+
+        acc[id].push(item);
+        return acc;
+      }, {});
+      items = order.reduce((list, id) => [...list, itemsDict[id].sort((a, b) => b.sent_at_second - a.sent_at_second)[0]], []);
       updatedState = { ...state,
-        items
+        items,
+        order
       };
       break;
 

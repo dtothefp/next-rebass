@@ -149,7 +149,7 @@ const Item = memo(({
       borderRadius: "0",
       cursor: "pointer"
     },
-    bg: "muted",
+    bg: "primary",
     width: "100%"
   }, "Update")));
 });

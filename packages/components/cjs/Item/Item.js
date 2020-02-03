@@ -152,7 +152,7 @@ const Item = (0, _react.memo)(({
       borderRadius: `0`,
       cursor: `pointer`
     },
-    bg: "muted",
+    bg: "primary",
     width: "100%"
   }, "Update")));
 });

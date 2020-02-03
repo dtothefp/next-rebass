@@ -12,7 +12,7 @@ var _react = _interopRequireDefault(require("react"));
 var _rebass = require("rebass");
 
 var _default = () => _react.default.createElement(_rebass.Flex, {
-  bg: "muted",
+  bg: "primary",
   p: 3
 }, _react.default.createElement(_rebass.Image, {
   width: "150px",

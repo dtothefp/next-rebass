@@ -1,7 +1,7 @@
 import React from "react";
 import { Flex, Image } from 'rebass';
 export default (() => React.createElement(Flex, {
-  bg: "muted",
+  bg: "primary",
   p: 3
 }, React.createElement(Image, {
   width: "150px",
