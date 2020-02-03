@@ -54,7 +54,14 @@ This repository uses [yarn](https://yarnpkg.com/) and [lerna](https://github.com
   - Due to the requirements of this challenge for use of WebSockets I used SocketIO as it seems to be the defacto choice for use in Node and client side JS. I haven't worked much with WebSockets but this library was straight forward enough although if I had more time I'd probably look into security and authentication concerns around the use of SocketIO to send data from the client to the server.
 
 ### Application Concerns and TODO's
-
+- Make the Active vs Historical nav bar sticky
+  - The sidebar filter is stick but I didn't put the time in to do the view nav. There is probably an open source React module for this but because I was using Rebass / Emotion I didn't want to import a module that might require some sort of Webpack CSS compilation configuration.
+- Investigate SocketIO security
+  - Potentially for syncing data back to the server I should have setup a REST endpoint but I just used SocketIO to emit data.
+- Make the app responsive for mobile use
+  - Again because I'm using Rebass and it's them system I didn't take the time to ramp up on this. There are specific ways to define properties such as `width` using an array that will interact with breakpoints set in the theme and would probably be pretty trivial to implement.
+- N seconds filter for the COOKED state
+  - I somehow didn't notice this requirement until finishing the application and didn't have time to go back and implement it.
 
 ### Testing
 This app uses Jest and Enzyme to test the client side application as well as using Jest to test the server application.
