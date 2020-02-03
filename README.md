@@ -18,7 +18,7 @@ Start a local dev server with hot reloading and serve port 3000 => `http://local
 yarn dev
 ```
 
-Bundle and optimize all static assets and serve port 3000 => `http://localhost:3000
+Bundle and optimize all static assets and serve port 3000 => `http://localhost:3000`
 ```
 yarn prod
 ```
