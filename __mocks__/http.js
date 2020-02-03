@@ -1,1 +1,3 @@
-export default jest.fn();
+const http = jest.genMockFromModule('http');
+
+module.exports = http;

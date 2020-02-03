@@ -1,2 +1,2 @@
-export const readJson = jest.fn();
-export const outputJson = jest.fn();
+exports.readJson = jest.fn();
+exports.outputJson = jest.fn();

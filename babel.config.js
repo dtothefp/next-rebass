@@ -5,6 +5,18 @@ module.exports = (api) => {
 
   api.cache.forever();
 
+  if (env === 'node') {
+    return {
+      presets: [
+        [ `@babel/preset-env`, {
+          targets: {
+            node: `current`,
+          },
+        }],
+      ]
+    }
+  }
+
   if (env === `cjs`) {
     return {
       presets: [

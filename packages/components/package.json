@@ -11,5 +11,8 @@
   },
   "devDependencies": {
     "@babel/cli": "7.8.4"
+  },
+  "dependencies": {
+    "@css/redux": "1.0.0"
   }
 }

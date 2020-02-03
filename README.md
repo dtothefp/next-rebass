@@ -61,10 +61,19 @@ This repository uses [yarn](https://yarnpkg.com/) and [lerna](https://github.com
 - Make the app responsive for mobile use
   - Again because I'm using Rebass and it's them system I didn't take the time to ramp up on this. There are specific ways to define properties such as `width` using an array that will interact with breakpoints set in the theme and would probably be pretty trivial to implement.
 - N seconds filter for the COOKED state
-  - I somehow didn't notice this requirement until finishing the application and didn't have time to go back and implement it.
+  - I somehow didn't notice this requirement until nearly finishing the application. Previously, I just had a checkbox for filtering by all COOKED state. My implementation of the N seconds input is a bit unpolished from a UI and code perspective. If I had more time I would refine how I was calculating the ordering and filtering of items.
+- Changing item data via the UI
+  - The items change quite quickly on a 1 second interval and therefore can be difficult to edit. I would potentially track an items position and if it were being edited cease to update it. Also, as mentioned previously the data is being synced back to the server via WebSockets and it might be a better solution to use a REST call.
+- Server tests
+  - These tests are extremely naive and difficult to perform because the server is a monolith and requires various mocks that involve asynchronous processes. For some reason the mock for updating JSON is not working as well. In a production application it would be good to modularize the server and test different aspects in isolation.
 
 ### Testing
-This app uses Jest and Enzyme to test the client side application as well as using Jest to test the server application.
+This app uses [Jest](https://jestjs.io/) and [Enzyme](https://airbnb.io/enzyme/) to test the client side application as well as using Jest to test the server application.
+
+Compile the `packages/*/lib`
+```
+yarn lerna run build
+```
 
 To run tests
 ```
