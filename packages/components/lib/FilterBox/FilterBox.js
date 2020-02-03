@@ -104,8 +104,7 @@ const FilterBox = () => {
               }}
             />Cooked</Label>
             <Label
-              py={2}
-              pl={2}
+              p={2}
               sx={{
                 borderStyle: `solid`,
                 borderWidth: `1px`,
@@ -119,11 +118,15 @@ const FilterBox = () => {
               <Input
                 placeholder="elapsed time in seconds"
                 type="number"
-                name="cooked"
+                name="cooked_time"
                 height="25px"
                 min="1"
                 onChange={handleInputChange}
                 value={time}
+                sx={{
+                  borderRadius: `0`,
+                  borderColor: `gray`
+                }}
               />
             </Label>
           </Box>

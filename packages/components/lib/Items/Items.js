@@ -88,8 +88,6 @@ const Items = () => {
       !isNaN(time) && time > 0;
 
     if (shouldCalculateCookedDuration) {
-      console.log(`*****CALCULATING`, currTime - timestamp <= (time * 1000));
-
       return currTime - timestamp <= (time * 1000);
     } else {
       return filter.length ? filter.includes(event_name) : true;

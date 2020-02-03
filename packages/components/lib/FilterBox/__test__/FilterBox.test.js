@@ -7,6 +7,10 @@ const {Provider} = StoreContext;
 
 describe(`#FilterBox`, () => {
   const dispatch = jest.fn();
+  const state = {
+    filter: [],
+    view: ``,
+  };
 
   afterEach(() => {
     dispatch.mockClear();
@@ -15,7 +19,7 @@ describe(`#FilterBox`, () => {
   it(`renders`, () => {
     expect(
       render(
-        <Provider value={{dispatch}}>
+        <Provider value={{dispatch, state}}>
           <FilterBox />
         </Provider>
       )
@@ -24,7 +28,7 @@ describe(`#FilterBox`, () => {
 
   it(`dispatches upon selecting checkboxes`, () => {
     const wrapper = mount(
-      <Provider value={{dispatch}}>
+      <Provider value={{dispatch, state}}>
         <FilterBox />
       </Provider>
     );

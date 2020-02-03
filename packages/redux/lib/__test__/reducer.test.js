@@ -1,3 +1,4 @@
+import { advanceTo, clear } from 'jest-date-mock';
 import { actions, constants, reducer } from '../';
 
 const {
@@ -14,35 +15,57 @@ const {
   UPDATE_ITEM_SUCCESS,
   UPDATE_ITEM_FAILED,
 } = constants;
-const {CREATED} = deliveryStates
+const {
+  CREATED, COOKED
+} = deliveryStates
 
 describe(`#reducer`, () => {
+  afterEach(() => {
+    clear();
+  });
+
   it(`adds and sorts items and keeps track of original order by ID`, () => {
+    const timestamp = 1580749384642;
+
+    advanceTo(timestamp);
+
     const idA = `A`;
     const idB = `B`;
-    const itemA = {sent_at_second: 2, id: idA};
-    const itemB = {sent_at_second: 3, id: idB};
+    const itemA = {
+      sent_at_second: 2,
+      id: idA,
+      event_name: CREATED
+    };
+    const itemB = {
+      sent_at_second: 3,
+      id: idB,
+      event_name: CREATED
+    };
     const newItems = [
       itemB,
       itemA
     ];
     let state = reducer({items: []}, addItems(newItems));
 
-    expect(state).toEqual({
-      items: [itemA, itemB],
-      order: [idA, idB]
-    });
+    expect(state.items).toEqual([itemA, itemB]);
+    expect(state.order).toEqual([idA, idB]);
 
     const idC = `C`;
-    const itemC = {sent_at_second: 5, id: idC};
-    const updatedItemA = {...itemA, sent_at_second: 10};
+    const itemC = {
+      sent_at_second: 5,
+      id: idC,
+      event_name: CREATED
+    };
+    const updatedItemA = {
+      ...itemA,
+      event_name: COOKED,
+      sent_at_second: 10
+    };
 
     state = reducer(state, addItems([itemC, itemB, updatedItemA]));
 
-    expect(state).toEqual({
-      items: [updatedItemA, itemB, itemC],
-      order: [idA, idB, idC]
-    });
+    expect(state.items).toEqual([{ ...updatedItemA , timestamp}, itemB, itemC]);
+    expect(state.order).toEqual([idA, idB, idC]);
   });
 
   it(`adds an item filter`, () => {

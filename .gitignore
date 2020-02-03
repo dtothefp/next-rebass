@@ -1,4 +1,8 @@
 .DS_Store
 .next
 out
+es
+cjs
+dist
 node_modules
+*.log

@@ -53,7 +53,10 @@ const DataInput = ({
   name,
   value
 }) => (
-  <Box width={historical && name === `destination` ? `50%` : `40%`}>
+    <Box
+      pr={2}
+      width={historical && name === `destination` ? `50%` : `40%`}
+    >
     <Input
       type="text"
       name={name}
